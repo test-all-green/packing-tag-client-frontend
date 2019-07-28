@@ -20,12 +20,11 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   
   response => {
-    const res = response.data
+    const res = response
 
     return res;
   },
   error => {
-    
     return Promise.reject(error)
   }
 )

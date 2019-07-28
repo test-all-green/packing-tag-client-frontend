@@ -11,16 +11,21 @@
     >
       <el-row>
         <el-col :span="18" :offset="3">
-          <el-form-item prop="username">
-            <el-input type="text" v-model="account.username" auto-complete="off" placeholder="账号"></el-input>
+          <el-form-item prop="staffName">
+            <el-input type="text" v-model="account.staffName" auto-complete="off" placeholder="账号"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="18" :offset="3">
-          <el-form-item prop="pwd">
-            <el-input type="password" v-model="account.pwd" auto-complete="off" placeholder="密码"></el-input>
+          <el-form-item prop="staffPassword">
+            <el-input
+              type="password"
+              v-model="account.staffPassword"
+              auto-complete="off"
+              placeholder="密码"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -40,11 +45,12 @@
 
 <script>
 import { login } from "@/api/login";
+import { MessageBox, Message } from "element-ui";
+import { reject } from "q";
 export default {
   data() {
     const validUsername = str => {
-      const valid_map = ["admin", "editor"];
-      return valid_map.indexOf(str.trim()) >= 0;
+      return str.length > 0;
     };
 
     const validateUsername = (rule, value, callback) => {
@@ -64,14 +70,16 @@ export default {
     return {
       logining: false,
       account: {
-        username: "",
-        pwd: ""
+        staffName: "",
+        staffPassword: ""
       },
       rules: {
-        username: [
+        staffName: [
           { required: true, validator: validateUsername, trigger: "blur" }
         ],
-        pwd: [{ required: true, validator: validatePassword, trigger: "blur" }]
+        staffPassword: [
+          { required: true, validator: validatePassword, trigger: "blur" }
+        ]
       },
       checked: true
     };
@@ -81,10 +89,19 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          console.log("submit!", this.account);
-          login(this.account).then(response => {
-            console.log("response....", response.data);
-          });
+          login(this.account)
+            .then(response => {
+              this.$router.push({ path: "/main" });
+              console.log("response....", response);
+            })
+            .catch(error => {
+              console.log(error.response.data);
+              Message({
+                message: error.response.data || "error",
+                type: "error",
+                duration: 3 * 1000
+              });
+            });
         }
       });
     }
