@@ -8,6 +8,10 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
+    if(window.localStorage.getItem('access-token')) {
+      console.log("token: " + window.localStorage.getItem('access-token'));
+      config.headers['token'] = window.localStorage.getItem('access-token');
+    }
     return config
   },
   error => {

@@ -18,7 +18,7 @@
       </mt-tab-item>
       <mt-tab-item id="停取">
         <i class="el-icon-map-location" slot="icon"></i>
-        停取
+        <span @click="getMsg">停取</span>
       </mt-tab-item>
       <mt-tab-item id="历史">
         <i class="el-icon-notebook-2" slot="icon"></i>
@@ -33,10 +33,18 @@
 </template>
 
 <script>
+import { get } from '@/utils/http'
 export default {
   data() {
     return {
       selected: ''
+    }
+  },
+  methods: {
+    getMsg() {
+      get('http://localhost:8088/parking-staffs/getMessage').then((response) => {
+        console.log(response.data);
+      })
     }
   },
 };

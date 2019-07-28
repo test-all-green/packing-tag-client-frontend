@@ -11,8 +11,13 @@
     >
       <el-row>
         <el-col :span="18" :offset="3">
-          <el-form-item prop="staffName">
-            <el-input type="text" v-model="account.staffName" auto-complete="off" placeholder="账号"></el-input>
+          <el-form-item prop="loginMethod">
+            <el-input
+              type="text"
+              v-model="account.loginMethod"
+              auto-complete="off"
+              placeholder="账号"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -70,11 +75,11 @@ export default {
     return {
       logining: false,
       account: {
-        staffName: "",
+        loginMethod: "",
         staffPassword: ""
       },
       rules: {
-        staffName: [
+        loginMethod: [
           { required: true, validator: validateUsername, trigger: "blur" }
         ],
         staffPassword: [
@@ -91,16 +96,28 @@ export default {
         if (valid) {
           login(this.account)
             .then(response => {
-              this.$router.push({ path: "/main" });
+              const data = response.data;
+              if (data.token !== undefined) {
+                localStorage.setItem('access-token', data.token)
+                this.$router.push({ path: "/main" });
+              }
+              if (data.message) {
+                Message({
+                  message: data.message || "error",
+                  type: "error",
+                  duration: 3 * 1000
+                });
+              }
+              
               console.log("response....", response);
             })
             .catch(error => {
-              console.log(error.response.data);
-              Message({
-                message: error.response.data || "error",
-                type: "error",
-                duration: 3 * 1000
-              });
+              // console.log(error.response.data);
+              // Message({
+              //   message: error.response.data || "error",
+              //   type: "error",
+              //   duration: 3 * 1000
+              // });
             });
         }
       });
