@@ -24,7 +24,7 @@ let router = new Router({
     },
     {
       path: '/signinAccount',
-      component: () => import('@/views/signin/index.vue')
+      component: () => import('@/views/signin/signin.vue')
     },
     {
       path: '/main',
