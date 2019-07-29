@@ -199,9 +199,10 @@ export default {
 </script>
 
 <style>
-/* .registermain {
-  background-image: url('../../assets/img/3.jpg')
-} */
+.registermain {
+  background-color: #dcdcdc;
+  height: 667px;
+}
 
 .mint-header {
   height: 50px;

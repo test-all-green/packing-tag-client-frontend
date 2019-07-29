@@ -111,7 +111,7 @@ export default {
               const data = response.data;
               if (data.token !== undefined) {
                 localStorage.setItem('access-token', data.token)
-                this.$router.push({ path: "/main" });
+                this.$router.push({ path: "/serve" });
               }
               if (data.message) {
                 Message({
@@ -141,6 +141,8 @@ export default {
 <style>
 .formBody {
   font-size: 12px;
+  height: 667px;
+  background-color: #dcdcdc; 
 }
 
 .formBody .el-row span.register,span.findAccount {
