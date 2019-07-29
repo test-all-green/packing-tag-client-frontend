@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getMsg() {
-      get('http://localhost:8088/parking-staffs/getMessage').then((response) => {
+      get('http://39.98.244.95:8088/parking-staffs/getMessage').then((response) => {
         console.log(response.data);
       })
     }
