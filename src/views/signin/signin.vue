@@ -179,7 +179,7 @@ export default {
             if (data.code == 200) {
               this.$notify({
                 title: "成功",
-                message: "这是一条成功的提示消息",
+                message: "注册成功，请登录",
                 type: "success"
               });
               this.$router.push({ path: "/login" });
