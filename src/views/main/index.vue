@@ -1,9 +1,9 @@
 <template>
   <div>
-    <mt-header title="多个按钮">
-      <router-link to="/" slot="left">
+    <mt-header title="TAG停车宝" style="font-size:20px;">
+      <!-- <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
-      </router-link>
+      </router-link> -->
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
 
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getMsg() {
-      get('http://localhost:8088/parking-staffs/getMessage').then((response) => {
+      get('http://39.98.244.95:8088/parking-staffs/getMessage').then((response) => {
         console.log(response.data);
       })
     }
