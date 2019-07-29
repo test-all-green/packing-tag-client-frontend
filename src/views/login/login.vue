@@ -35,6 +35,11 @@
         </el-col>
       </el-row>
 
+      <el-row class="userType">
+        <el-radio v-model="userTypeRadio" label="1">用户</el-radio>
+        <el-radio v-model="userTypeRadio" label="2">职员</el-radio>
+      </el-row>
+
       <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
 
       <el-row>
@@ -81,6 +86,7 @@ export default {
       }
     };
     return {
+      userTypeRadio: "",
       logining: false,
       account: {
         loginMethod: "",
@@ -100,18 +106,22 @@ export default {
 
   methods: {
     signinAccount() {
-      console.log("....signin")
+      console.log("....signin");
       this.$router.push({ path: "/signinAccount" });
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          login(this.account)
+          login(this.account, this.userTypeRadio)
             .then(response => {
               const data = response.data;
               if (data.token !== undefined) {
-                localStorage.setItem('access-token', data.token)
-                this.$router.push({ path: "/serve" });
+                localStorage.setItem("access-token", data.token);
+                if (this.userTypeRadio == 1) {
+                  this.$router.push({ path: "/serve" });
+                } else if (this.userTypeRadio == 2) {
+                  this.$router.push({ path: "/main" });
+                }
               }
               if (data.message) {
                 Message({
@@ -120,7 +130,7 @@ export default {
                   duration: 3 * 1000
                 });
               }
-              
+
               console.log("response....", response);
             })
             .catch(error => {
@@ -142,10 +152,15 @@ export default {
 .formBody {
   font-size: 12px;
   height: 667px;
-  background-color: #dcdcdc; 
+  background-color: #dcdcdc;
 }
 
-.formBody .el-row span.register,span.findAccount {
+.formBody .el-row span.register,
+span.findAccount {
   font-size: 13px;
+}
+
+.userType {
+  padding-bottom: 10px;
 }
 </style>
