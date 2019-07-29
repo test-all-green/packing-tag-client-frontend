@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
-import loginDemo from '@/views/login'
+import loginDemo from '@/views/login/login'
 
 Vue.use(Router)
 
@@ -23,6 +23,10 @@ let router = new Router({
       component: loginDemo
     },
     {
+      path: '/signinAccount',
+      component: () => import('@/views/signin/index.vue')
+    },
+    {
       path: '/main',
       component: () => import('@/views/main/index.vue')
     }
@@ -32,6 +36,8 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.path.startsWith('/login')) {
     window.localStorage.removeItem('access-token')
+    next()
+  } else if(to.path.startsWith('/signinAccount')){
     next()
   } else {
     let token = window.localStorage.getItem('access-token')
