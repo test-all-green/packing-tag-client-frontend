@@ -25,7 +25,18 @@ let router = new Router({
     {
       path: '/main',
       component: () => import('@/views/main/index.vue')
-    }
+    },
+    {
+      path: '/custom',
+      component: () => import('@/views/custom/index.vue'),
+      children:[
+        {
+          path: '/parking',
+          component: () => import('@/views/custom/contents/parking.vue')
+        }
+      ]
+    },
+    
   ]
 })
 
