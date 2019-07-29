@@ -1,6 +1,6 @@
 <template>
   <div class="formBody">
-    <img src="@/assets/logo.png" style="margin-top:40px" />
+    <img src="@/assets/logo.png" style="margin-top:40px;margin-bottom:40px;" />
     <el-form
       ref="loginForm"
       :model="account"
@@ -47,7 +47,7 @@
     </el-form>
     <el-row>
       <el-col :span="4" :offset="8">
-        <span class="register">注册</span>
+        <span class="register" @click="signinAccount">注册</span>
       </el-col>
       <el-col :span="4">
         <span class="findAccount">找回密码</span>
@@ -99,6 +99,10 @@ export default {
   },
 
   methods: {
+    signinAccount() {
+      console.log("....signin")
+      this.$router.push({ path: "/signinAccount" });
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
