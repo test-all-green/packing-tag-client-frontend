@@ -45,6 +45,14 @@
         </el-col>
       </el-row>
     </el-form>
+    <el-row>
+      <el-col :span="4" :offset="8">
+        <span class="register">注册</span>
+      </el-col>
+      <el-col :span="4">
+        <span class="findAccount">找回密码</span>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -129,5 +137,9 @@ export default {
 <style>
 .formBody {
   font-size: 12px;
+}
+
+.formBody .el-row span.register,span.findAccount {
+  font-size: 13px;
 }
 </style>
