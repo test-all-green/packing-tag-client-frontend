@@ -40,6 +40,10 @@ let router = new Router({
                     component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
                 },
                 {
+                    path: '/choosePkLot',
+                    component: () => import('@/views/parkingBoy/contents/choosePkLot'),
+                },
+                {
                     path: '/fetchCarOrder',
                     component: () => import('@/views/parkingBoy/contents/fetchCarOrder.vue')
                 }

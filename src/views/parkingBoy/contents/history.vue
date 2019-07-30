@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+      我得订单
+  </div>
 </template>
 
 <script>
@@ -15,9 +17,7 @@ export default {
 
   mounted(){},
 
-  created(){
-      
-  },
+  created(){},
 
   methods: {},
 
@@ -26,5 +26,5 @@ export default {
 }
 
 </script>
-<style lang='scss' scoped>
+<style lang='scss'>
 </style>
