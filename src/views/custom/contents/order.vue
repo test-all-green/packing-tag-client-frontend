@@ -62,7 +62,8 @@ export default {
       },
       orderStatusFileter(val){
           let map = {
-              PW:'等待停车受理',
+              PW:'无人受理',
+              PI:'停取中',
               F:'已完成',
               C:'取消订单'
           }

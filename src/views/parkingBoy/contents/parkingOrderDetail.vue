@@ -27,6 +27,10 @@
               <label>预计停车时长：</label>
               {{order.scheduledParkingTime+'小时'}}
             </p>
+             <p v-if="order.type == 1">
+              <label>车辆位置：</label>
+              {{order.scheduledParkingTime}}
+            </p>
             <!-- <p>
               <label>联系电话：</label>
               {{order.phone}}

@@ -19,13 +19,25 @@
                 </div>
             </van-collapse-item>
             <van-collapse-item title="共享车位" name="2">
+              <div class="lot-choose">
+                    <el-card class="box-card lot-item" v-for="item in shareLots" :key="item.id">
+                        <div @click="chooseShareLot(item)">
+                            <span>
+                                {{item.parkingLotName}}(可用)
+                            </span>
+                            <span class="location">
+                                {{item.location}}
+                            </span>
+                        </div>
+                    </el-card>
+                </div>
             </van-collapse-item>
         </van-collapse>
     </div>
 </template>
 
 <script>
-import {getPkLots } from '../../../api/parkinglot'
+import {getPkLots,getShareLots } from '../../../api/parkinglot'
 import {putGrapOrder} from '../../../api/order'
 export default {
   data() {
@@ -34,6 +46,8 @@ export default {
       
       lots: [
       ],
+      shareLots:[],
+
       orderId:''
     };
   },
@@ -47,14 +61,20 @@ export default {
   created() {
     console.log(this.$route)
     this.orderId = this.$route.query.orderId;
-    this.initData();
+    this.initLotsData();
+    this.initShareLotsData();
   },
 
   methods: {
-    async initData(){
-        const data = await getPkLots();
+    async initLotsData(){
+        const data = await getPkLots(this.orderId);
         console.log(data.data)
         this.lots = data.data;
+    },
+    async initShareLotsData(){
+      const data = await getShareLots(this.orderId);
+      console.log(data.data)
+      this.shareLots = data.data;
     },
     chooseLot(item) {
       this.$dialog
@@ -76,6 +96,26 @@ export default {
           // on cancel
         });
     },
+    chooseShareLot(item){
+      this.$dialog
+        .confirm({
+          title: "选择停车地点",
+          message: "确认抢单，并将车停往" + item.parkingLotName + "?"
+        })
+        .then(() => {
+          console.log("yes");
+            let postData= {
+              parkingLotType:2,
+              parkingLotId:item.id,
+              orderId:this.orderId
+            }
+            this.grapOrder(postData);
+            console.log(postData);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     async grapOrder(data){
       const res = await putGrapOrder(data);
       if(res.status == 200){
@@ -83,6 +123,7 @@ export default {
           message: '抢单成功，请尽快前往交接地点',
           type: 'success'
         });
+        this.$router.push('/parkingBoy/order-pkb');
       }
     }
   },

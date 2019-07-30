@@ -20,8 +20,7 @@
             <el-row>
               <el-col :span="4" :offset="1">
                 <span class="circle">
-                  <p v-if="order.status == 'PW'">停</p>
-                  <p v-if="order.status == 'FW'">取</p>
+                  <p >{{order.type|orderTypeFilter}}</p>
                 </span>
                 <!-- <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar> -->
               </el-col>
@@ -92,6 +91,14 @@ export default {
   },
   components: {
     parkingOrderDetail
+  },
+  filters:{
+     orderTypeFilter(val) {
+      if (val == 1) {
+        return "取";
+      }
+      return "停";
+    }
   }
 };
 </script>
@@ -117,19 +124,20 @@ export default {
   }
 
   .order-content-mid {
-    font-size: 13px;
-    .order-carNum {
-      margin-top: 10px;
       font-size: 16px;
-      color: #458e28;
+      .order-carNum {
+        margin-top: 10px;
+        // font-size: 16px;
+        color: #458e28;
+      }
+      .wait-location {
+        margin-top: 24px;
+
+      }
+      .order-create-time {
+        margin-top: 10px;
+      }
     }
-    .wait-location {
-      margin-top: 10px;
-    }
-    .order-create-time {
-      margin-top: 10px;
-    }
-  }
   .circle {
     display: inline-block;
     height: 60px;
