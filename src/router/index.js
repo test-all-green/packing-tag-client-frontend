@@ -46,10 +46,12 @@ let router = new Router({
       children: [
         {
           path: '/serve',
+          name:'serve',
           component: () => import('@/views/custom/contents/serve.vue')
         },
         {
           path: '/order',
+          name:'order',
           component: () => import('@/views/custom/contents/order.vue')
         }
       ]
@@ -58,24 +60,22 @@ let router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.path.startsWith('/login')) {
-//     window.localStorage.removeItem('access-token')
-//     next()
-//   } else if(to.path.startsWith('/signinAccount')){
-//     next()
-//   } else if(to.path.startsWith('/custom')){
-//     next()
-//   }else {
-//     let token = window.localStorage.getItem('access-token')
-//     if (!token) {
-//       next({ path: '/login' })
-//     } else {
-//       next()
-//     }
+router.beforeEach((to, from, next) => {
+  if (to.path.startsWith('/login')) {
+    window.localStorage.removeItem('access-token')
+    next()
+  } else if(to.path.startsWith('/signinAccount')){
+    next()
+  } else {
+    let token = window.localStorage.getItem('access-token')
+    if (!token) {
+      next({ path: '/login' })
+    } else {
+      next()
+    }
 
-//   }
-// })
+  }
+})
 
 export default router
 
