@@ -1,6 +1,6 @@
 <template>
-  <div class="grab-car-order-container">
-    <!-- <van-cell
+    <div class="grab-car-order-container">
+        <!-- <van-cell
       v-for="(item,index) in orderList"
       :key="index"
       num="2"
@@ -11,35 +11,35 @@
         <span>无</span>
       </template>
     </van-cell>-->
-    <!-- <mt-cell v-for="(item,index) in orderList" :key="index" :title="item.carNum"  value="带 icon"></mt-cell>   -->
+        <!-- <mt-cell v-for="(item,index) in orderList" :key="index" :title="item.carNum"  value="带 icon"></mt-cell>   -->
 
-    <div v-for="order in this.orderList" :key="order.id">
-      <el-card class="box-card" style="width: 100%;" shadow="hover">
-        <div class="card-body">
-          <el-row>
-            <el-col :span="4" :offset="1">
-              <!-- <span class="circle">
+        <div v-for="order in this.orderList" :key="order.id">
+            <el-card class="box-card" style="width: 100%;" shadow="hover">
+                <div class="card-body">
+                    <el-row>
+                        <el-col :span="4" :offset="1">
+                            <!-- <span class="circle">
                 <p>订单</p>
               </span>-->
-              <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar>
-            </el-col>
-            <el-col :span="9" :offset="1">
-              <div class="order-content-mid">
+                            <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar>
+                        </el-col>
+                        <el-col :span="9" :offset="1">
+                            <div class="order-content-mid">
 
-              </div>
-            </el-col>
+                            </div>
+                        </el-col>
 
-            <el-col :span="4" :offset="14">
-              <div class="right">
-                详情
-                <i class="el-icon-right"></i>
-              </div>
-            </el-col>
-          </el-row>
+                        <el-col :span="4" :offset="14">
+                            <div class="right">
+                                详情
+                                <i class="el-icon-right"></i>
+                            </div>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
         </div>
-      </el-card>
     </div>
-  </div>
 </template>
 
 <script>
@@ -51,19 +51,19 @@ export default {
     };
   },
   created() {},
-  mounted() {
-    getOrders().then(response => {
-      console.log("response.data :", response.data);
-      this.orderList = response.data;
-    });
-  }
+//   mounted() {
+//     getOrders().then(response => {
+//       console.log("response.data :", response.data);
+//       this.orderList = response.data;
+//     });
+//   }
 };
 </script>
 
 <style  lang='scss'>
 .grab-car-order-container {
   text-align: left;
-  height: 562px;
+  height: 100%;
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -96,8 +96,6 @@ export default {
     line-height: 20px;
     color: #a2a2a2;
     margin-top: 22px;
-
-   
   }
 }
 .grab-car-order-cell-value {
