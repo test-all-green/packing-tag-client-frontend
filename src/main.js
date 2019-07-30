@@ -14,6 +14,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(Mint);
+
 // Vue.use(axios)
 
 new Vue({
