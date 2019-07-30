@@ -6,76 +6,81 @@ import loginDemo from '@/views/login/login'
 Vue.use(Router)
 
 let router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      redirect: '/login'
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('@/views/About.vue')
-    },
-    {
-      path: '/login',
-      component: loginDemo
-    },
-    {
-      path: '/signinAccount',
-      component: () => import('@/views/signin/signin.vue')
-    },
-    {
-      path: '/parkingBoy',
-      component: () => import('@/views/parkingBoy/index.vue'),
-      children:[
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [
         {
-          path: '/grabCarOrder',
-          component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue')
+            path: '/',
+            redirect: '/login'
         },
         {
-          path: '/fetchCarOrder',
-          component: () => import('@/views/parkingBoy/contents/fetchCarOrder.vue')
-        }
-      ]
-    },
-    {
-      path: '/custom',
-      component: () => import('@/views/custom/index.vue'),
-      children: [
-        {
-          path: '/serve',
-          name:'serve',
-          component: () => import('@/views/custom/contents/serve.vue')
+            path: '/about',
+            name: 'about',
+            component: () => import('@/views/About.vue')
         },
         {
-          path: '/order',
-          name:'order',
-          component: () => import('@/views/custom/contents/order.vue')
+            path: '/login',
+            component: loginDemo
+        },
+        {
+            path: '/signinAccount',
+            component: () => import('@/views/signin/signin.vue')
+        },
+        {
+            path: '/parkingBoy',
+            component: () => import('@/views/parkingBoy/index.vue'),
+            children: [
+                {
+                    path: '/grabCarOrder',
+                    component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue'),
+                    children: []
+                },
+                {
+                    path: '/pkOrderDetail',
+                    component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
+                },
+                {
+                    path: '/fetchCarOrder',
+                    component: () => import('@/views/parkingBoy/contents/fetchCarOrder.vue')
+                }
+            ]
+        },
+        {
+            path: '/custom',
+            component: () => import('@/views/custom/index.vue'),
+            children: [
+                {
+                    path: '/serve',
+                    name: 'serve',
+                    component: () => import('@/views/custom/contents/serve.vue')
+                },
+                {
+                    path: '/order',
+                    name: 'order',
+                    component: () => import('@/views/custom/contents/order.vue')
+                }
+            ]
         }
-      ]
-    }
 
-  ]
+    ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.path.startsWith('/login')) {
-    window.localStorage.removeItem('access-token')
-    next()
-  } else if(to.path.startsWith('/signinAccount')){
-    next()
-  } else {
-    let token = window.localStorage.getItem('access-token')
-    if (!token) {
-      next({ path: '/login' })
-    } else {
-      next()
-    }
+// router.beforeEach((to, from, next) => {
+//     if (to.path.startsWith('/login')) {
+//         window.localStorage.removeItem('access-token')
+//         next()
+//     } else if (to.path.startsWith('/signinAccount')) {
+//         next()
+//     } else {
+//         let token = window.localStorage.getItem('access-token')
+//         if (!token) {
+//             next({ path: '/login' })
+//         } else {
+//             next()
+//         }
 
-  }
-})
+//     }
+// })
 
 export default router
 

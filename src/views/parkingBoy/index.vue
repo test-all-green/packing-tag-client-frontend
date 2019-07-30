@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg">
     <mt-header title="TAG停车宝" style="font-size:20px;">
       <!-- <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
@@ -7,7 +7,7 @@
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
 
-    <div>
+    <div class="pk-body">
       <router-view></router-view>
     </div>
 
@@ -62,5 +62,9 @@ export default {
 
 .mint-header {
   height: 50px;
+}
+
+.pk-body{
+    height: 562px;
 }
 </style>

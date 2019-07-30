@@ -13,25 +13,25 @@
     </van-cell>-->
     <!-- <mt-cell v-for="(item,index) in orderList" :key="index" :title="item.carNum"  value="带 icon"></mt-cell>   -->
 
-    <div v-for="order in this.orderList" :key="order.id">
-      <el-card class="box-card" style="width: 100%;" shadow="hover">
+    <div v-for="order in orderList" :key="order.id">
+      <el-card class="box-card" style="width: 100%;" shadow="hover" >
         <div class="card-body">
           <el-row>
             <el-col :span="4" :offset="1">
               <span class="circle">
-                <p v-if="order.status == 'WP'">停</p>
-                <p v-if="order.status == 'WF'">取</p>
+                <p v-if="order.status == 'PW'">停</p>
+                <p v-if="order.status == 'FW'">取</p>
               </span>
               <!-- <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar> -->
             </el-col>
             <el-col :span="10" :offset="1">
               <div class="order-content-mid">
-                <div v-if="order.status == 'WP'">
+                <div v-if="order.status == 'PW'">
                   <p class="order-carNum">{{order.carNum}}</p>
                   <p class="wait-location">停车交接点: {{order.parkingWaitLocation}}</p>
                   <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
                 </div>
-                <div v-if="order.status == 'WF'">
+                <div v-if="order.status == 'FW'">
                   <p class="order-carNum">{{order.carNum}}</p>
                   <p class="wait-location">取车交接点: {{order.fetchWaitLocation}}</p>
                   <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
@@ -40,60 +40,73 @@
             </el-col>
 
             <el-col :span="4" :offset="3">
-              <div class="right" @click="showOrderDetail(order)">
-                详情
+              <div class="right" @click="showDetail(order)">
+                抢单
                 <i class="el-icon-right"></i>
               </div>
             </el-col>
           </el-row>
         </div>
       </el-card>
+      
     </div>
+    <parking-order-detail :Orderform="orderDetail" :show="show"/>
+
+    
+
   </div>
 </template>
 
 <script>
 import { getOrders } from "../../../api/order";
+import  parkingOrderDetail from '@/views/parkingBoy/contents/parkingOrderDetail.vue'
 export default {
   data() {
     return {
+      show:false,
+      orderDetail:{},
       orderList: [
         {
-          "id": "1",
-          "carNum": "粤B989TC",
-          "status": "WP",
-          "parkingWaitLocation": "深圳市南山区大沙河公园",
-          "createTime": "2019-07-30"
+          id: "1",
+          carNum: "粤B989TC",
+          status: "WP",
+          parkingWaitLocation: "深圳市南山区大沙河公园",
+          createTime: "2019-07-30"
         },
         {
-          "id": "2",
-          "carNum": "粤B889TX",
-          "status": "WF",
-          "fetchWaitLocation": "深圳市福田区",
-          "createTime": "2019-07-29"
+          id: "2",
+          carNum: "粤B889TX",
+          status: "WF",
+          fetchWaitLocation: "深圳市福田区",
+          createTime: "2019-07-29"
         }
       ]
     };
   },
   methods: {
-    showOrderDetail(order) {
+    showDetail(order) {
+      this.show = true;
+      this.orderDetail = order;
       console.log(order);
     }
   },
   created() {},
   mounted() {
-    // getOrders().then(response => {
-    //   console.log("response.data :", response.data);
-    //   this.orderList = response.data;
-    // });
-  }
+    getOrders().then(response => {
+      console.log("response.data :", response.data);
+      this.orderList = response.data;
+    });
+  },
+  components: {
+    parkingOrderDetail,
+  },
 };
 </script>
 
 <style  lang='scss'>
 .grab-car-order-container {
   text-align: left;
-  height: 562px;
+  height: 100%;
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -140,8 +153,6 @@ export default {
     line-height: 0px;
     color: #a2a2a2;
     margin-top: 28px;
-
-   
   }
 }
 .grab-car-order-cell-value {
