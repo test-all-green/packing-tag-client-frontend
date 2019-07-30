@@ -6,7 +6,9 @@
       </router-link> -->
             <mt-button icon="more" slot="right"></mt-button>
         </mt-header>
-        <router-view></router-view>
+        <div class="body">
+            <router-view></router-view>
+        </div>
         <mt-tabbar v-model="selected">
             <mt-tab-item id="serve">
                 <i class="el-icon-s-order" slot="icon"></i>
@@ -51,7 +53,9 @@ export default {
 .mint-tabbar .mint-tab-item .mint-tab-item-icon {
   font-size: 24px;
 }
-
+.body{
+    height: 562px;
+}
 .mint-header {
   height: 50px;
 }

@@ -1,5 +1,6 @@
 <template>
     <div class="order-user-show">
+        
         <div v-for="item in OrderData" :key="item.id">
             <el-card class="box-card" :class="{'timeout':item.status =='已完成'||item.status =='取消'}">
                 <div class="card-body">
@@ -14,9 +15,6 @@
                             <p class="status-text">状态：{{item.status}}</p>
                           
                         </el-col>
-                        <!-- <el-col :span="4">
-                              <p class="time">{{item.endTime}}</p>
-                        </el-col> -->
                         <el-col :span="4" :offset="4">
                             <div class="right">
                                 详情
@@ -33,6 +31,7 @@
 
 <script>
 import moment from 'moment'
+import {getHistoryOrder} from '../../../api/order'
 export default {
   data() {
     return {
@@ -72,6 +71,42 @@ export default {
           scheduledParkingTime: "",
           status: "已完成",
           endTime:'1564350791'
+        },
+        {
+          id: 5,
+          carNum: "粤D4874",
+          parkingWaitLocation: "",
+          scheduledParkingArriveTime: "",
+          scheduledParkingTime: "",
+          status: "已完成",
+          endTime:'1564350791'
+        },
+        {
+          id: 6,
+          carNum: "粤D4874",
+          parkingWaitLocation: "",
+          scheduledParkingArriveTime: "",
+          scheduledParkingTime: "",
+          status: "已完成",
+          endTime:'1564350791'
+        },
+        {
+          id:7,
+          carNum: "粤D4874",
+          parkingWaitLocation: "",
+          scheduledParkingArriveTime: "",
+          scheduledParkingTime: "",
+          status: "已完成",
+          endTime:'1564350791'
+        },
+        {
+          id: 8,
+          carNum: "粤D4874",
+          parkingWaitLocation: "",
+          scheduledParkingArriveTime: "",
+          scheduledParkingTime: "",
+          status: "已完成",
+          endTime:'1564350791'
         }
       ]
     };
@@ -83,9 +118,16 @@ export default {
 
   mounted() {},
 
-  created() {},
+  created() {
+      this.initData();
+  },
 
-  methods: {},
+  methods: {
+      async initData(){
+        const data = await getHistoryOrder();
+        console.log(data);
+      }
+  },
 
   filters: {
       dateFilter(val){
@@ -96,6 +138,11 @@ export default {
 </script>
 <style lang='scss' >
 .order-user-show {
+    height:100%;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
   .el-card__body {
     padding: 0;
     text-align: left;
@@ -110,7 +157,7 @@ export default {
     height: 60px;
     width: 60px;
     border-radius: 50%;
-    background: #ec6149;
+    background: #f3ada1;
     line-height: 60px;
     // margin-left: 20px;
     & p {

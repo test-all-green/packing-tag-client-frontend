@@ -90,6 +90,7 @@ export default {
     width: 240px;
     border-radius: 30px;
     font-size: 32px;
+    border:2px solid #333;
   }
   .can-check {
     .el-button {
