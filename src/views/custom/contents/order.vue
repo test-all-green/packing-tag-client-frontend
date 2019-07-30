@@ -12,7 +12,7 @@
                         </el-col>
                         <el-col :span="9" :offset="1">
                             <p class="carNum-text">{{item.carNum}}</p>
-                            <p class="status-text">状态：{{item.status}}</p>
+                            <p class="status-text">状态：{{item.status|orderStatusFileter}}</p>
                           
                         </el-col>
                         <el-col :span="4" :offset="4">
@@ -35,80 +35,7 @@ import {getHistoryOrder} from '../../../api/order'
 export default {
   data() {
     return {
-      OrderData: [
-        {
-          id: 1,
-          carNum: "粤D251454",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "停车等待受理",
-          endTime:'156445371'
-        },
-        {
-          id: 2,
-          carNum: "粤D4874",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "已完成",
-          endTime:'156445371'
-        },
-        {
-          id: 3,
-          carNum: "粤D251454",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "取消",
-          endTime:'1564440791'
-        },
-        {
-          id: 4,
-          carNum: "粤D4874",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "已完成",
-          endTime:'1564350791'
-        },
-        {
-          id: 5,
-          carNum: "粤D4874",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "已完成",
-          endTime:'1564350791'
-        },
-        {
-          id: 6,
-          carNum: "粤D4874",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "已完成",
-          endTime:'1564350791'
-        },
-        {
-          id:7,
-          carNum: "粤D4874",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "已完成",
-          endTime:'1564350791'
-        },
-        {
-          id: 8,
-          carNum: "粤D4874",
-          parkingWaitLocation: "",
-          scheduledParkingArriveTime: "",
-          scheduledParkingTime: "",
-          status: "已完成",
-          endTime:'1564350791'
-        }
-      ]
+      OrderData: [ ]
     };
   },
 
@@ -125,13 +52,21 @@ export default {
   methods: {
       async initData(){
         const data = await getHistoryOrder();
-        console.log(data);
+        this.OrderData = data.data;
       }
   },
 
   filters: {
       dateFilter(val){
           moment(val).format('YYYY MM DD, HH:mm:ss')
+      },
+      orderStatusFileter(val){
+          let map = {
+              PW:'等待停车受理',
+              F:'已完成',
+              C:'取消订单'
+          }
+          return map[val]
       }
   }
 };

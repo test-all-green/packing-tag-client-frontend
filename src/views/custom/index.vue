@@ -1,6 +1,6 @@
 <template>
     <div class="bg">
-        <mt-header :title="titleName" style="font-size:20px;">
+        <mt-header :title="title" style="font-size:20px;">
             <!-- <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link> -->
@@ -31,20 +31,28 @@ export default {
   data() {
     return {
       selected: "serve",
-      routerName:{
-          serve:"服务厅",
-          order:"我的订单",
-          my:"个人中心"
+      routerName: {
+        serve: "服务厅",
+        order: "我的订单",
+        my: "个人中心"
       },
-      titleName:'服务厅'
     };
   },
   watch: {
     selected(val, oldVal) {
-      this.$router.push("/" + val);
-        this.titleName = this.routerName[val];
+      this.$router.push('/'+val);
+      this.titleName = this.routerName[val];
     }
   },
+  computed:{
+      title(){
+          let path = this.$route.path;
+          var index=path.lastIndexOf("\\");
+          path=path.substring(index+2,path.length);
+          this.selected = path;
+            return  this.routerName[path];
+      }
+},
   methods: {}
 };
 </script>
@@ -53,8 +61,8 @@ export default {
 .mint-tabbar .mint-tab-item .mint-tab-item-icon {
   font-size: 24px;
 }
-.body{
-    height: 562px;
+.body {
+  height: 562px;
 }
 .mint-header {
   height: 50px;
