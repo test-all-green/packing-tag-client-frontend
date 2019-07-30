@@ -16,13 +16,13 @@
         <i class="el-icon-s-order" slot="icon"></i>
         抢单
       </mt-tab-item>
-      <mt-tab-item id="fetchCarOrder">
+      <!-- <mt-tab-item id="fetchCarOrder">
         <i class="el-icon-map-location" slot="icon"></i>
         <span @click="getMsg">停取</span>
-      </mt-tab-item>
-      <mt-tab-item id="历史">
+      </mt-tab-item> -->
+      <mt-tab-item id="我的订单">
         <i class="el-icon-notebook-2" slot="icon"></i>
-        历史
+        我的订单
       </mt-tab-item>
       <mt-tab-item id="我的">
         <i class="el-icon-user" slot="icon"></i>
@@ -66,5 +66,10 @@ export default {
 
 .pk-body{
     height: 562px;
+    /* background: red; */
+}
+.bg {
+  background: #dcdcdc;
+  /* height: 667px; */
 }
 </style>
