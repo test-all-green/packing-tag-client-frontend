@@ -12,10 +12,10 @@
             </el-row>
         </div>
         <div v-if="inputing == 'parking'">
-            <parking></parking>
+            <parking :type="0"></parking>
         </div>
         <div v-if="inputing == 'fetch'">
-            <fetch></fetch>
+            <parking :type="1"></parking>
         </div>
 
     </div>

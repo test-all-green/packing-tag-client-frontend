@@ -31,17 +31,24 @@ let router = new Router({
             component: () => import('@/views/parkingBoy/index.vue'),
             children: [
                 {
-                    path: '/grabCarOrder',
+                    path: '/parkingBoy/serve-pkb',
                     component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue'),
+                    name:"服务厅",
                     children: []
                 },
                 {
-                    path: '/pkOrderDetail',
+                    path: '/parkingBoy/pkOrderDetail',
                     component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
                 },
                 {
-                    path: '/fetchCarOrder',
-                    component: () => import('@/views/parkingBoy/contents/fetchCarOrder.vue')
+                    path: '/parkingBoy/choosePkLot',
+                    name:'选择停车场',
+                    component: () => import('@/views/parkingBoy/contents/choosePkLot'),
+                },
+                {
+                    path: '/parkingBoy/order-pkb',
+                    name:'我的订单',
+                    component: () => import('@/views/parkingBoy/contents/history.vue')
                 }
             ]
         },
@@ -50,13 +57,13 @@ let router = new Router({
             component: () => import('@/views/custom/index.vue'),
             children: [
                 {
-                    path: '/serve',
-                    name: 'serve',
+                    path: '/custom/serve',
+                    name: '服务厅',
                     component: () => import('@/views/custom/contents/serve.vue')
                 },
                 {
-                    path: '/order',
-                    name: 'order',
+                    path: '/custom/order',
+                    name: '我的订单',
                     component: () => import('@/views/custom/contents/order.vue')
                 },
                 {
@@ -70,22 +77,22 @@ let router = new Router({
     ]
 })
 
-router.beforeEach((to, from, next) => {
-    if (to.path.startsWith('/login')) {
-        window.localStorage.removeItem('access-token')
-        next()
-    } else if (to.path.startsWith('/signinAccount')) {
-        next()
-    } else {
-        let token = window.localStorage.getItem('access-token')
-        if (!token) {
-            next({ path: '/login' })
-        } else {
-            next()
-        }
+// router.beforeEach((to, from, next) => {
+//     if (to.path.startsWith('/login')) {
+//         window.localStorage.removeItem('access-token')
+//         next()
+//     } else if (to.path.startsWith('/signinAccount')) {
+//         next()
+//     } else {
+//         let token = window.localStorage.getItem('access-token')
+//         if (!token) {
+//             next({ path: '/login' })
+//         } else {
+//             next()
+//         }
 
-    }
-})
+//     }
+// })
 
 export default router
 

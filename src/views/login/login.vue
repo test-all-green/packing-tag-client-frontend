@@ -86,7 +86,7 @@ export default {
       }
     };
     return {
-      userTypeRadio: "",
+      userTypeRadio: "1",
       logining: false,
       account: {
         loginMethod: "",
@@ -118,9 +118,9 @@ export default {
               if (data.token !== undefined) {
                 localStorage.setItem("access-token", data.token);
                 if (this.userTypeRadio == 1) {
-                  this.$router.push({ path: "/serve" });
+                  this.$router.push({ path: "/custom/serve" });
                 } else if (this.userTypeRadio == 2) {
-                  this.$router.push({ path: "/parkingBoy" });
+                  this.$router.push({ path: "/parkingBoy/serve-pkb" });
                 }
               }
               if (data.message) {
@@ -153,6 +153,7 @@ export default {
   font-size: 12px;
   height: 667px;
   background-color: #dcdcdc;
+  text-align: center;
 }
 .formBody .el-form {
   top: unset;
