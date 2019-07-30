@@ -153,6 +153,7 @@ export default {
   font-size: 12px;
   height: 667px;
   background-color: #dcdcdc;
+  text-align: center;
 }
 .formBody .el-form {
   top: unset;

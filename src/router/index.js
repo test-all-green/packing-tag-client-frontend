@@ -69,22 +69,22 @@ let router = new Router({
     ]
 })
 
-router.beforeEach((to, from, next) => {
-    if (to.path.startsWith('/login')) {
-        window.localStorage.removeItem('access-token')
-        next()
-    } else if (to.path.startsWith('/signinAccount')) {
-        next()
-    } else {
-        let token = window.localStorage.getItem('access-token')
-        if (!token) {
-            next({ path: '/login' })
-        } else {
-            next()
-        }
+// router.beforeEach((to, from, next) => {
+//     if (to.path.startsWith('/login')) {
+//         window.localStorage.removeItem('access-token')
+//         next()
+//     } else if (to.path.startsWith('/signinAccount')) {
+//         next()
+//     } else {
+//         let token = window.localStorage.getItem('access-token')
+//         if (!token) {
+//             next({ path: '/login' })
+//         } else {
+//             next()
+//         }
 
-    }
-})
+//     }
+// })
 
 export default router
 
