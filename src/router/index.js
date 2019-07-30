@@ -27,24 +27,34 @@ let router = new Router({
       component: () => import('@/views/signin/signin.vue')
     },
     {
-      path: '/main',
-      component: () => import('@/views/main/index.vue')
+      path: '/parkingBoy',
+      component: () => import('@/views/parkingBoy/index.vue'),
+      children:[
+        {
+          path: '/grab',
+          component: () => import('@/views/custom/contents/serve.vue')
+        },
+        {
+          path: '/order',
+          component: () => import('@/views/custom/contents/order.vue')
+        }
+      ]
     },
     {
       path: '/custom',
       component: () => import('@/views/custom/index.vue'),
-      children:[
+      children: [
         {
-            path:'/serve',
-            component: () => import('@/views/custom/contents/serve.vue')
+          path: '/serve',
+          component: () => import('@/views/custom/contents/serve.vue')
         },
         {
-            path:'/order',
-            component: () => import('@/views/custom/contents/order.vue')
-        },
+          path: '/order',
+          component: () => import('@/views/custom/contents/order.vue')
+        }
       ]
-    },
-    
+    }
+
   ]
 })
 

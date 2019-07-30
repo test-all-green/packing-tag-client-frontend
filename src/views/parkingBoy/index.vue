@@ -35,19 +35,19 @@
 <script>
 import { get } from '@/utils/http'
 export default {
-  data() {
+  data () {
     return {
       selected: ''
     }
   },
   methods: {
-    getMsg() {
+    getMsg () {
       get('http://39.98.244.95:8088/parking-staffs/getMessage').then((response) => {
-        console.log(response.data);
+        console.log(response.data)
       })
     }
-  },
-};
+  }
+}
 </script>
 
 <style>

@@ -154,7 +154,9 @@ export default {
   height: 667px;
   background-color: #dcdcdc;
 }
-
+.formBody .el-form {
+  top: unset;
+}
 .formBody .el-row span.register,
 span.findAccount {
   font-size: 13px;
