@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import SockJS from  'sockjs-client';  
-import Stomp from 'stompjs';
+// import SockJS from  'sockjs-client';  
+// import Stomp from 'stompjs';
 export default {
   data() {
     return {
@@ -48,20 +48,20 @@ export default {
     };
   },
   mounted(){
-    var socket = new SockJS('/wsendpoint'); //1连接SockJS的endpoint是“wsendpoint”，与后台代码中注册的endpoint要一样。
-            stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
-            stompClient.connect({}, function(frame) {//3连接webSocket的服务端。
-                console.log('开始进行连接Connected: ' + frame);
-                //4通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
-                stompClient.subscribe('/topic/getResponse', function(respnose){
-                    console.log('respnose :', respnose);
-                    this.isNoticed=true
-                });
-                stompClient.subscribe('/user/' + userId + '/msg', function(respnose){
-                    console.log(respnose);
-                    this.isNoticed=true
-                });
-            });
+    // var socket = new SockJS('/wsendpoint'); //1连接SockJS的endpoint是“wsendpoint”，与后台代码中注册的endpoint要一样。
+    //         stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
+    //         stompClient.connect({}, function(frame) {//3连接webSocket的服务端。
+    //             console.log('开始进行连接Connected: ' + frame);
+    //             //4通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
+    //             stompClient.subscribe('/topic/getResponse', function(respnose){
+    //                 console.log('respnose :', respnose);
+    //                 this.isNoticed=true
+    //             });
+    //             stompClient.subscribe('/user/' + userId + '/msg', function(respnose){
+    //                 console.log(respnose);
+    //                 this.isNoticed=true
+    //             });
+    //         });
   },
   watch: {
     selected(val, oldVal) {

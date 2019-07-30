@@ -67,8 +67,8 @@ let router = new Router({
                     component: () => import('@/views/custom/contents/order.vue')
                 },
                 {
-                    path: '/share',
-                    name: 'share',
+                    path: '/custom/share',
+                    name: '共享',
                     component: () => import('@/views/custom/contents/share.vue')
                 }
             ]
