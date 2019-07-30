@@ -12,11 +12,11 @@
     </div>
 
     <mt-tabbar v-model="selected">
-      <mt-tab-item id="抢单">
+      <mt-tab-item id="grabCarOrder">
         <i class="el-icon-s-order" slot="icon"></i>
         抢单
       </mt-tab-item>
-      <mt-tab-item id="停取">
+      <mt-tab-item id="fetchCarOrder">
         <i class="el-icon-map-location" slot="icon"></i>
         <span @click="getMsg">停取</span>
       </mt-tab-item>
@@ -38,6 +38,11 @@ export default {
   data () {
     return {
       selected: ''
+    }
+  },
+  watch: {
+    selected(val, oldVal) {
+      this.$router.push("/" + val);
     }
   },
   methods: {

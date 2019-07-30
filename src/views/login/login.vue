@@ -120,7 +120,7 @@ export default {
                 if (this.userTypeRadio == 1) {
                   this.$router.push({ path: "/serve" });
                 } else if (this.userTypeRadio == 2) {
-                  this.$router.push({ path: "/main" });
+                  this.$router.push({ path: "/parkingBoy" });
                 }
               }
               if (data.message) {

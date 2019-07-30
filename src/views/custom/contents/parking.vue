@@ -4,7 +4,7 @@
             <p class="order-title">请填写订单</p>
         </el-row>
         <el-row align="center">
-            <el-col :span="20" :offset="1">
+            <el-col class="col-form" :span="20" :offset="1">
                 <el-form :label-position="labelPosition" label-width="80px" :model="Orderform" :rules="rules">
                     <el-form-item label="车牌" prop="carNum">
                         <el-input v-model="Orderform.carNum" placeholder="请输入详细车牌号"></el-input>
@@ -77,6 +77,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.col-form .el-form {
+  top: unset;
+}
 .push-order-pane {
   position: relative;
   //   height: 100%;

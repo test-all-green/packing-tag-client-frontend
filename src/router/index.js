@@ -31,12 +31,12 @@ let router = new Router({
       component: () => import('@/views/parkingBoy/index.vue'),
       children:[
         {
-          path: '/grab',
-          component: () => import('@/views/custom/contents/serve.vue')
+          path: '/grabCarOrder',
+          component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue')
         },
         {
-          path: '/order',
-          component: () => import('@/views/custom/contents/order.vue')
+          path: '/fetchCarOrder',
+          component: () => import('@/views/parkingBoy/contents/fetchCarOrder.vue')
         }
       ]
     },
