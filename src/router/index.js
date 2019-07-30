@@ -31,16 +31,22 @@ let router = new Router({
             component: () => import('@/views/parkingBoy/index.vue'),
             children: [
                 {
-                    path: '/grabCarOrder',
+                    path: '/parkingBoy/serve-pkb',
                     component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue'),
+                    name:"服务厅",
                     children: []
                 },
                 {
-                    path: '/pkOrderDetail',
+                    path: '/parkingBoy/pkOrderDetail',
                     component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
                 },
                 {
-                    path: '/fetchCarOrder',
+                    path: '/parkingBoy/choosePkLot',
+                    name:'选择停车场',
+                    component: () => import('@/views/parkingBoy/contents/choosePkLot'),
+                },
+                {
+                    path: '/parkingBoy/fetchCarOrder',
                     component: () => import('@/views/parkingBoy/contents/fetchCarOrder.vue')
                 }
             ]
@@ -50,13 +56,13 @@ let router = new Router({
             component: () => import('@/views/custom/index.vue'),
             children: [
                 {
-                    path: '/serve',
-                    name: 'serve',
+                    path: '/custom/serve',
+                    name: '服务厅',
                     component: () => import('@/views/custom/contents/serve.vue')
                 },
                 {
-                    path: '/order',
-                    name: 'order',
+                    path: '/custom/order',
+                    name: '我的订单',
                     component: () => import('@/views/custom/contents/order.vue')
                 }
             ]

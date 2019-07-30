@@ -1,6 +1,6 @@
 <template>
   <div class="bg">
-    <mt-header title="TAG停车宝" style="font-size:20px;">
+    <mt-header :title="titleName" style="font-size:20px;">
       <!-- <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link> -->
@@ -12,19 +12,19 @@
     </div>
 
     <mt-tabbar v-model="selected">
-      <mt-tab-item id="grabCarOrder">
+      <mt-tab-item id="serve-pkb">
         <i class="el-icon-s-order" slot="icon"></i>
         抢单
       </mt-tab-item>
-      <mt-tab-item id="fetchCarOrder">
+      <!-- <mt-tab-item id="fetchCarOrder">
         <i class="el-icon-map-location" slot="icon"></i>
         <span @click="getMsg">停取</span>
-      </mt-tab-item>
-      <mt-tab-item id="历史">
+      </mt-tab-item> -->
+      <mt-tab-item id="order-pkb">
         <i class="el-icon-notebook-2" slot="icon"></i>
-        历史
+        我的订单
       </mt-tab-item>
-      <mt-tab-item id="我的">
+      <mt-tab-item id="my-pkb">
         <i class="el-icon-user" slot="icon"></i>
         我的
       </mt-tab-item>
@@ -37,13 +37,22 @@ import { get } from '@/utils/http'
 export default {
   data () {
     return {
-      selected: ''
+      selected: 'serve-pkb',
+      // titleName:'服务厅'
     }
   },
   watch: {
     selected(val, oldVal) {
-      this.$router.push("/" + val);
+      this.$router.push('/parkingBoy/'+val);
     }
+  },
+  computed:{
+    titleName(){
+      return this.$route.name;
+    }
+  },
+  created(){
+    
   },
   methods: {
     getMsg () {
@@ -66,5 +75,10 @@ export default {
 
 .pk-body{
     height: 562px;
+    /* background: red; */
+}
+.bg {
+  background: #dcdcdc;
+  /* height: 667px; */
 }
 </style>

@@ -60,6 +60,9 @@ export function put(url, data={}, params={}){
     url,
     params,
     data,
+    headers: {
+      'Content-Type': 'application/json'
+    },
   })
 }
 

@@ -1,10 +1,11 @@
 <template>
     <div class="bg">
-        <mt-header :title="title" style="font-size:20px;">
+        <div :class="{'red-point': isNoticed }"></div>
+        <mt-header :title="titleName" style="font-size:20px;position:relative;">
             <!-- <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link> -->
-            <mt-button icon="more" slot="right"></mt-button>
+            <i class="el-icon-bell" slot="right"></i>
         </mt-header>
         <div class="body">
             <router-view></router-view>
@@ -27,9 +28,12 @@
 </template>
 
 <script>
+import SockJS from  'sockjs-client';  
+import Stomp from 'stompjs';
 export default {
   data() {
     return {
+      isNoticed:false,
       selected: "serve",
       routerName: {
         serve: "服务厅",
@@ -38,20 +42,33 @@ export default {
       },
     };
   },
+  mounted(){
+    var socket = new SockJS('/wsendpoint'); //1连接SockJS的endpoint是“wsendpoint”，与后台代码中注册的endpoint要一样。
+            stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
+            stompClient.connect({}, function(frame) {//3连接webSocket的服务端。
+                console.log('开始进行连接Connected: ' + frame);
+                //4通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
+                stompClient.subscribe('/topic/getResponse', function(respnose){
+                    console.log('respnose :', respnose);
+                    this.isNoticed=true
+                });
+                stompClient.subscribe('/user/' + userId + '/msg', function(respnose){
+                    console.log(respnose);
+                    this.isNoticed=true
+                });
+            });
+  },
   watch: {
     selected(val, oldVal) {
-      this.$router.push('/'+val);
-      this.titleName = this.routerName[val];
+      this.$router.push('/custom/'+val);
     }
   },
   computed:{
-      title(){
-          let path = this.$route.path;
-          var index=path.lastIndexOf("\\");
-          path=path.substring(index+2,path.length);
-          this.selected = path;
-            return  this.routerName[path];
-      }
+    
+    titleName(){
+      return this.$route.name;
+    }
+ 
 },
   methods: {}
 };
@@ -60,6 +77,16 @@ export default {
 <style>
 .mint-tabbar .mint-tab-item .mint-tab-item-icon {
   font-size: 24px;
+}
+.red-point{
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  z-index: 10;
+  right: 10px;
+  top: 25px;
+  border-radius: 50%;
 }
 .body {
   height: 562px;

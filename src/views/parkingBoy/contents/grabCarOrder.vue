@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <parking-order-detail :Orderform="orderDetail" :show="show" />
+    <parking-order-detail ref='window' :order="orderDetail"  />
   </div>
 </template>
 
@@ -64,45 +64,31 @@ import parkingOrderDetail from "@/views/parkingBoy/contents/parkingOrderDetail.v
 export default {
   data() {
     return {
-      show: false,
       orderDetail: {},
-      orderList: [
-        {
-          id: "1",
-          carNum: "粤B989TC",
-          status: "WP",
-          parkingWaitLocation: "深圳市南山区大沙河公园",
-          createTime: "2019-07-30"
-        },
-        {
-          id: "2",
-          carNum: "粤B889TX",
-          status: "WF",
-          fetchWaitLocation: "深圳市福田区",
-          createTime: "2019-07-29"
-        }
-      ]
+      orderList: []
     };
   },
   methods: {
     showDetail(order) {
-      this.show = true;
-      // order.createTime = moment(order.createTime).format('YYYY MM DD hh:mm:ss');
-      order.createTime = formatDate2(order.createTime);
+      this.$refs['window'].show = true;
+      order.createTime = moment(order.createTime).format('YYYY MM DD hh:mm:ss');
+      // order.createTime = formatDate2(order.createTime);
       // order.status = order.status == 'PW' ? '停车等待受理' : '取车等待受理';
       this.orderDetail = order;
-      console.log(order);
     }, 
     closeDetailreturnFalse() {
-      
+
+    },
+    async initData(){
+      const res = await getOrders("PW");
+      this.orderList = res.data;
+    console.log(this.orderList)
     }
   },
   created() {},
   mounted() {
-    getOrders().then(response => {
-      console.log("response.data :", response.data);
-      this.orderList = response.data;
-    });
+    this.initData();
+    
   },
   components: {
     parkingOrderDetail
