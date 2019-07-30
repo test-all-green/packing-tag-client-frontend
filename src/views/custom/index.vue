@@ -14,6 +14,10 @@
                 <i class="el-icon-s-order" slot="icon"></i>
                 <span>服务厅</span>
             </mt-tab-item>
+            <mt-tab-item id="share">
+                <i class="el-icon-place" slot="icon"></i>
+                <span>共享</span>
+            </mt-tab-item>
             <mt-tab-item id="order">
                 <i class="el-icon-notebook-2" slot="icon"></i>
                 <span>我的订单</span>
@@ -33,6 +37,7 @@ export default {
       selected: "serve",
       routerName: {
         serve: "服务厅",
+        share:"共享",
         order: "我的订单",
         my: "个人中心"
       },

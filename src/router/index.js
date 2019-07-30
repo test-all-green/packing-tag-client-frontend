@@ -58,6 +58,11 @@ let router = new Router({
                     path: '/order',
                     name: 'order',
                     component: () => import('@/views/custom/contents/order.vue')
+                },
+                {
+                    path: '/share',
+                    name: 'share',
+                    component: () => import('@/views/custom/contents/share.vue')
                 }
             ]
         }
