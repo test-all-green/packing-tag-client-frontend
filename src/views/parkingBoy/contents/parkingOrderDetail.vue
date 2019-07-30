@@ -12,7 +12,7 @@
         <van-panel
           :title="Orderform.carNum"
           :desc="Orderform.createTime"
-          :status="Orderform.status"
+          :status="orderContent"  
           overlay="false"
         >
           <div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -57,6 +58,7 @@ export default {
       //   createTime: "2019-07-29 12:23:30",
       //   phone: "13651241411"
       // }
+      orderContent: this.Orderform.status === 'PW' ? '停车等待受理' : '取车等待受理'
     };
   },
 
@@ -64,7 +66,9 @@ export default {
 
   components: {},
 
-  computed: {},
+  computed: {
+    // statusContent() {return Orderform.status == 'PW' ? '停车等待受理' : '取车等待受理'}
+  },
 
   mounted() {},
 
@@ -72,12 +76,16 @@ export default {
 
   methods: {},
 
-  filters: {}
+  filters: {},
+
+  beforeDestroy: function() {
+    this.show = false;
+  }
 };
 </script>
 <style lang='scss' >
 .pk-order-detail {
-  height: 100%;
+   height: 562px;
   .van-popup {
     z-index: 1000;
   }

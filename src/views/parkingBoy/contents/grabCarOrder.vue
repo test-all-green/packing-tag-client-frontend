@@ -13,58 +13,59 @@
     </van-cell>-->
     <!-- <mt-cell v-for="(item,index) in orderList" :key="index" :title="item.carNum"  value="带 icon"></mt-cell>   -->
 
-    <div v-for="order in orderList" :key="order.id">
-      <el-card class="box-card" style="width: 100%;" shadow="hover" >
-        <div class="card-body">
-          <el-row>
-            <el-col :span="4" :offset="1">
-              <span class="circle">
-                <p v-if="order.status == 'PW'">停</p>
-                <p v-if="order.status == 'FW'">取</p>
-              </span>
-              <!-- <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar> -->
-            </el-col>
-            <el-col :span="10" :offset="1">
-              <div class="order-content-mid">
-                <div v-if="order.status == 'PW'">
-                  <p class="order-carNum">{{order.carNum}}</p>
-                  <p class="wait-location">停车交接点: {{order.parkingWaitLocation}}</p>
-                  <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
+    <div class="order-list">
+      <div v-for="order in orderList" :key="order.id">
+        <el-card class="box-card" style="width: 100%;" shadow="hover">
+          <div class="card-body">
+            <el-row>
+              <el-col :span="4" :offset="1">
+                <span class="circle">
+                  <p v-if="order.status == 'PW'">停</p>
+                  <p v-if="order.status == 'FW'">取</p>
+                </span>
+                <!-- <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar> -->
+              </el-col>
+              <el-col :span="10" :offset="1">
+                <div class="order-content-mid">
+                  <div v-if="order.status == 'PW'">
+                    <p class="order-carNum">{{order.carNum}}</p>
+                    <p class="wait-location">停车交接点: {{order.parkingWaitLocation}}</p>
+                    <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
+                  </div>
+                  <div v-if="order.status == 'FW'">
+                    <p class="order-carNum">{{order.carNum}}</p>
+                    <p class="wait-location">取车交接点: {{order.fetchWaitLocation}}</p>
+                    <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
+                  </div>
                 </div>
-                <div v-if="order.status == 'FW'">
-                  <p class="order-carNum">{{order.carNum}}</p>
-                  <p class="wait-location">取车交接点: {{order.fetchWaitLocation}}</p>
-                  <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
-                </div>
-              </div>
-            </el-col>
+              </el-col>
 
-            <el-col :span="4" :offset="3">
-              <div class="right" @click="showDetail(order)">
-                抢单
-                <i class="el-icon-right"></i>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-card>
-      
+              <el-col :span="4" :offset="3">
+                <div class="right" @click="showDetail(order)">
+                  抢单
+                  <i class="el-icon-right"></i>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </el-card>
+      </div>
     </div>
-    <parking-order-detail :Orderform="orderDetail" :show="show"/>
 
-    
-
+    <parking-order-detail :Orderform="orderDetail" :show="show" />
   </div>
 </template>
 
 <script>
+import { formatDate, formatDate2 } from "@/utils/data.js";
 import { getOrders } from "../../../api/order";
-import  parkingOrderDetail from '@/views/parkingBoy/contents/parkingOrderDetail.vue'
+import moment from "moment";
+import parkingOrderDetail from "@/views/parkingBoy/contents/parkingOrderDetail.vue";
 export default {
   data() {
     return {
-      show:false,
-      orderDetail:{},
+      show: false,
+      orderDetail: {},
       orderList: [
         {
           id: "1",
@@ -86,8 +87,14 @@ export default {
   methods: {
     showDetail(order) {
       this.show = true;
+      // order.createTime = moment(order.createTime).format('YYYY MM DD hh:mm:ss');
+      order.createTime = formatDate2(order.createTime);
+      // order.status = order.status == 'PW' ? '停车等待受理' : '取车等待受理';
       this.orderDetail = order;
       console.log(order);
+    }, 
+    closeDetailreturnFalse() {
+      
     }
   },
   created() {},
@@ -98,8 +105,8 @@ export default {
     });
   },
   components: {
-    parkingOrderDetail,
-  },
+    parkingOrderDetail
+  }
 };
 </script>
 
@@ -111,15 +118,18 @@ export default {
   &::-webkit-scrollbar {
     display: none;
   }
-  .el-card__body {
-    padding: 0;
-    text-align: left;
-    height: 80px;
-    padding: 10px 0 0 0;
+  .order-list {
+    .el-card__body {
+      padding: 0;
+      text-align: left;
+      height: 80px;
+      padding: 10px 0 0 0;
+    }
+    .card-body {
+      position: relative;
+    }
   }
-  .card-body {
-    position: relative;
-  }
+
   .order-content-mid {
     font-size: 13px;
     .order-carNum {
