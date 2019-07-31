@@ -5,8 +5,9 @@
                 <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
                     <div class="order-body">
                         <van-panel :title="order.carNum" :desc="dateFormat(order.createTime)" :status="changeStatus(order.status)">
+                            <!-- <div style="float:left;height:65px;width:100%;margin-top:-80px;" @click="activeIndex = -1"></div> -->
                             <div>
-                                 <p>
+                                <p>
                                     <label>订单类型：</label>
                                     {{order.type|orderTypeFilter}}
                                 </p>
@@ -88,13 +89,21 @@ export default {
   mounted() {},
 
   created() {
+      this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
     this.initHistoryOrder();
   },
 
   methods: {
     async initHistoryOrder() {
+      
+
       const data = await getPkHistoryOrder();
       console.log("load historyOrder...", data.data);
+
       this.orderList = data.data;
     },
     lookDetail(order) {},
@@ -127,22 +136,29 @@ export default {
       if (this.isCompletePark(order)) {
         const res = await completeOrder(order.id);
         if (res.data.code == 200) {
-          this.$toast({
-            message: "又完成一单，再接再厉！",
+          // Toast.success('又完成一单，再接再厉！');
+
+          //   this.$toast({
+          //     message: "又完成一单，再接再厉！",
+          //     type: "success",
+          //     className: "toast"
+          //   });
+          this.$Toast.loading({
             type: "success",
-            className: "toast"
+            message: "又完成一单，再接再厉！",
+            duration: 2000
           });
           this.initHistoryOrder();
         }
         console.log(res.data.code);
       }
     },
-    active(id){
-        if(this.activeIndex == id) {
-            this.activeIndex = -1;
-            return;
-        }
-        this.activeIndex = id;
+    active(id) {
+      if (this.activeIndex == id) {
+        this.activeIndex = -1;
+        return;
+      }
+      this.activeIndex = id;
     }
   },
 
@@ -185,7 +201,7 @@ export default {
     }
     .isActive {
       .van-panel {
-        height: 320px;
+        height: 350px;
         transition: height 0.6s;
       }
     }

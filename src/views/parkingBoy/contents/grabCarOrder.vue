@@ -141,6 +141,7 @@ import moment from "moment";
 import parkingOrderDetail from "@/views/parkingBoy/contents/parkingOrderDetail.vue";
 import handle from "../../../utils/formateHandle.js";
 import {grapOrder} from '../../../api/order'
+
 export default {
   data() {
     return {
@@ -174,11 +175,11 @@ export default {
       console.log(order.id);
       const res = await grapOrder(order.id);
       console.log(res.data + "xxxxx");
-      this.$toast({
-        message: "抢单成功",
-        type: "success",
-        className: "toast"
-      });
+      this.$Toast.loading({
+            type: "success",
+            message: "抢单成功",
+            duration: 2000
+          });
        this.$router.push({
         name: "选择停车场",
         params: { orderId: order.id }
@@ -193,9 +194,16 @@ export default {
         this.activeIndex = id;
     }
   },
-  created() {},
+  created() {
+       this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
+      this.initData();
+  },
   mounted() {
-    this.initData();
+    
   },
   components: {
     parkingOrderDetail

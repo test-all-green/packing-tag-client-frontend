@@ -61,7 +61,11 @@ export default {
   mounted() {},
 
   created() {
-    
+     this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
     this.orderId = this.$route.params.orderId;
     console.log(this.$route);
     console.log(this.orderId,"dshds")
