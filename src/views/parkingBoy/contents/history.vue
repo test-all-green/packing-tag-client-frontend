@@ -138,11 +138,11 @@ export default {
       }
     },
     active(id){
-        if(this.activeIndex == order.id) {
+        if(this.activeIndex == id) {
             this.activeIndex = -1;
             return;
         }
-        this.activeIndex = order.id;
+        this.activeIndex = id;
     }
   },
 
@@ -164,7 +164,6 @@ export default {
   &::-webkit-scrollbar {
     display: none;
   }
-
   .order-list {
     .order-body {
       color: #969799;
@@ -174,7 +173,6 @@ export default {
       }
       .van-panel__content {
         padding: 5px 18px;
-        // text-align: center;
       }
       & label {
         display: inline-block;
@@ -193,6 +191,7 @@ export default {
     }
     .van-panel {
       height: 65px;
+      transition: height 0.6s;
     }
     .el-card__body {
       padding: 0;

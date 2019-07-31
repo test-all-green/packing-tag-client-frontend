@@ -62,7 +62,7 @@
             </div>
         </div> -->
         <div class="order-list">
-            <div v-for="order in orderList" :key="order.id" @click="activeIndex = order.id">
+            <div v-for="order in orderList" :key="order.id" @click="active(order.id)">
                 <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
                     <div class="order-body">
                         <van-panel :title="carNum(order)" :desc="order.parkingWaitLocation" :status="changeStatus(order.status)">
@@ -184,6 +184,13 @@ export default {
         params: { orderId: order.id }
       });
       this.show = false;
+    },
+     active(id){
+        if(this.activeIndex == id) {
+            this.activeIndex = -1;
+            return;
+        }
+        this.activeIndex = id;
     }
   },
   created() {},
@@ -241,6 +248,7 @@ export default {
     }
     .van-panel {
       height: 65px;
+      transition: height 0.6s;
     }
     .el-card__body {
       padding: 0;
