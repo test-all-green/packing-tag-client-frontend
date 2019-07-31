@@ -10,10 +10,10 @@
             <label>{{item.parkingLotName}}</label>
           </el-form-item>
           <el-form-item label="地址: ">
-            <label>{{item.location}}</label>
+            <label>{{item.locationName}}</label>
           </el-form-item>
           <el-form-item label="区域: ">
-            <label>{{item.regionId}}</label>
+            <label>{{regionName}}</label>
           </el-form-item>
           <el-form-item label="开始时间: ">
             <label>{{timestampToTime(item.beginTime)}}</label>
@@ -31,8 +31,14 @@
 </template>
 <script>
 import { cancelPublishShareParkingLot } from "../../../api/shared";
+import { getRegionById, getRegions } from "../../../api/region";
 export default {
   props: ["item"],
+  data() {
+    return {
+      regionName: ""
+    };
+  },
   methods: {
     timestampToTime(cjsj) {
       console.log(cjsj);
@@ -60,6 +66,11 @@ export default {
         this.$parent.initData();
       }
     }
-  }
+  },
+  mounted() {
+    getRegionById(this.item.regionId).then(Response => {
+      this.regionName = Response.data.regionName;
+    });
+  },
 };
 </script>

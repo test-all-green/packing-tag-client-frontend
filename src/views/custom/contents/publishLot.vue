@@ -9,11 +9,11 @@
           <el-form-item label="名称: ">
             <label readonly="readonly">{{item.parkingLotName}}</label>
           </el-form-item>
-          <el-form-item label="地址: ">
-            <label readonly="readonly">{{item.location}}</label>
-          </el-form-item>
           <el-form-item label="区域: ">
-            <label readonly="readonly">{{item.regionId}}</label>
+            <label readonly="readonly">{{regionName}}</label>
+          </el-form-item>
+          <el-form-item label="地址: ">
+            <label readonly="readonly">{{item.locationName}}</label>
           </el-form-item>
           <el-form-item label="开始时间: ">
             <el-date-picker v-model="form.beginTime" type="datetime" placeholder="选择共享开始时间"></el-date-picker>
@@ -43,7 +43,8 @@ export default {
         beginTime: "",
         endTime: ""
       },
-      region: {}
+      region: {},
+      regionName:""
     };
   },
   created() {
@@ -68,6 +69,11 @@ export default {
         this.$parent.initData();
       }
     }
-  }
+  },
+  mounted() {
+    getRegionById(this.item.regionId).then(Response => {
+      this.regionName = Response.data.regionName;
+    });
+  },
 };
 </script>
