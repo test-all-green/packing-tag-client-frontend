@@ -24,7 +24,7 @@
                             <el-col :span="5" :offset="3">
                                 <div class="right">
                                     <el-button type="primary" v-if="order.status == 'WT'" @click="chooseLost(order)">选择停车点</el-button>
-                                    <div v-else style="margin-top:20px;" @click="lookDetail(order)"> 详情
+                                    <div v-if="order.status != 'WT'" style="margin-top:20px;" @click="lookDetail(order)"> 详情
                                         <i class="el-icon-right"></i>
                                     </div>
                                 </div>
@@ -45,23 +45,23 @@ export default {
   data() {
     return {
       orderList: [
-        {
-          id: 1,
-          carNum: "粤XXXX",
-          type: "0",
-          parkingWaitLocation: "街道",
-          regionName: "香洲区",
-          scheduledParkingArriveTime: "9:00",
-          status: "WT"
-        },
-        {
-          id: 2,
-          carNum: "粤XXXX",
-          type: "1",
-          parkingWaitLocation: "街道",
-          regionName: "香洲区",
-          scheduledParkingArriveTime: "9:00"
-        }
+        // {
+        //   id: 1,
+        //   carNum: "粤XXXX",
+        //   type: "0",
+        //   parkingWaitLocation: "街道",
+        //   regionName: "香洲区",
+        //   scheduledParkingArriveTime: "9:00",
+        //   status: "WT"
+        // },
+        // {
+        //   id: 2,
+        //   carNum: "粤XXXX",
+        //   type: "1",
+        //   parkingWaitLocation: "街道",
+        //   regionName: "香洲区",
+        //   scheduledParkingArriveTime: "9:00"
+        // }
       ]
     };
   },
