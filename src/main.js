@@ -8,8 +8,11 @@ import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import store from './store/store'
+import { Toast } from 'vant';
 
-
+Vue.use(Toast);
+Vue.prototype.$Toast = Toast;
 Vue.use(Vant);
 Vue.config.productionTip = false
 
@@ -20,5 +23,6 @@ Vue.use(Mint);
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

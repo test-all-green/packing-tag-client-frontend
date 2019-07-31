@@ -152,17 +152,11 @@ export default {
       fetchOrderItem: {}
     };
   },
-
   components: {},
-
   computed: {},
-
-  mounted() {},
-
   created() {
     this.initData();
   },
-
   methods: {
     async initData() {
       const data = await getHistoryOrder();
@@ -179,6 +173,11 @@ export default {
         }
         this.$router.push({path: '/custom/serve', query: data})
 
+    }
+  },
+  filters: {
+    dateFilter(val) {
+      moment(val).format("YYYY MM DD, HH:mm:ss");
     },
 
     async showDetailPage(order) {

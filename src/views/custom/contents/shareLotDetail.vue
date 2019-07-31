@@ -9,11 +9,14 @@
           <el-form-item label="名称: ">
             <label>{{item.parkingLotName}}</label>
           </el-form-item>
-          <el-form-item label="地址: ">
-            <label>{{item.location}}</label>
-          </el-form-item>
           <el-form-item label="区域: ">
-            <label>{{item.regionId}}</label>
+            <label>{{regionName}}</label>
+          </el-form-item>
+          <el-form-item label="地址: ">
+            <label>{{item.locationName}}</label>
+          </el-form-item>
+          <el-form-item label="状态: ">
+            <label>{{statusMap[item.status]}}</label>
           </el-form-item>
           <el-form-item label="开始时间: ">
             <label>{{timestampToTime(item.beginTime)}}</label>
@@ -31,8 +34,18 @@
 </template>
 <script>
 import { cancelPublishShareParkingLot } from "../../../api/shared";
+import { getRegionById, getRegions } from "../../../api/region";
 export default {
   props: ["item"],
+  data() {
+    return {
+      regionName: "",
+      statusMap:{
+          1:"已发布",
+          2:"使用中"
+      }
+    };
+  },
   methods: {
     timestampToTime(cjsj) {
       console.log(cjsj);
@@ -50,16 +63,31 @@ export default {
     },
     async cancel() {
       console.log(this.form);
-      const data = await cancelPublishShareParkingLot(this.item.id);
-      if (data.status == 200) {
+      try {
+        var data = await cancelPublishShareParkingLot(this.item.id);
+        if (data.status == 200) {
+          this.$message({
+            message: "取消共享车位成功",
+            type: "success"
+          });
+        }
+      } catch {
         this.$message({
-          message: "取消共享车位成功",
-          type: "success"
+          message: "该车位已被使用，无法取消",
+          type: "error"
         });
-        this.$parent.addSuccess();
-        this.$parent.initData();
       }
+
+      this.$parent.addSuccess();
+      this.$parent.initData();
+
+      cancelPublishShareParkingLot(this.item.id).then({});
     }
+  },
+  mounted() {
+    getRegionById(this.item.regionId).then(Response => {
+      this.regionName = Response.data.regionName;
+    });
   }
 };
 </script>

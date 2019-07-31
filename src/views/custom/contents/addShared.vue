@@ -6,9 +6,6 @@
     <el-row align="center">
       <el-col class="col-form" :span="20" :offset="1">
         <el-form label-width="80px" :model="form" :rules="rules">
-          <el-form-item label="地址" prop="location">
-            <el-input v-model="form.location" placeholder="请输入车位详细地址"></el-input>
-          </el-form-item>
           <el-form-item label="名称" prop="parkingLotName">
             <el-input v-model="form.parkingLotName" placeholder="请输入车位的名称"></el-input>
           </el-form-item>
@@ -18,6 +15,17 @@
                 v-for="item in regions"
                 :key="item.id"
                 :label="item.regionName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="地址" label-width="80px">
+            <el-select v-model="form.locationId" placeholder="请选择地址">
+              <el-option
+                v-for="item in locationFilter"
+                :key="item.id"
+                :label="item.name"
                 :value="item.id"
               ></el-option>
             </el-select>
@@ -33,18 +41,20 @@
 <script>
 import { postShareParkingLot } from "../../../api/shared";
 import { getRegions } from "../../../api/region";
+import { getLocations } from "../../../api/location";
 export default {
   data() {
     return {
       labelPosition: "right",
       form: {
-        location: "",
+        locationId: "",
         parkingLotName: "",
         regionId: ""
       },
       regions: [],
+      locations: [],
       rules: {
-        location: [
+        locationId: [
           { required: true, message: "请输入车位详细地址", trigger: "blur" }
         ],
         parkingLotName: [
@@ -55,23 +65,67 @@ export default {
     };
   },
   methods: {
-    async submit() {
+    submit() {
       console.log(this.form);
-      const data = await postShareParkingLot(this.form);
-      console.log(data);
-      if (data.status == 201) {
+      if (
+        !this.form.parkingLotName ||
+        !this.form.locationId ||
+        !this.form.regionId
+      ) {
         this.$message({
-          message: "添加共享车位成功",
-          type: "success"
+          message: "输入信息不完整，请重新输入",
+          type: "error"
         });
-        this.$parent.addSuccess();
-        this.$parent.initData();
+        return;
       }
+      //   const data = await postShareParkingLot(this.form);
+      //   console.log(data);
+      //   if (data.status == 201) {
+      //     this.$message({
+      //       message: "添加共享车位成功",
+      //       type: "success"
+      //     });
+      //     this.$parent.addSuccess();
+      //     this.$parent.initData();
+      //   }
+
+      postShareParkingLot(this.form)
+        .then(Response => {
+          console.log(Response);
+          if (Response.status == 201) {
+            this.$message({
+              message: "添加共享车位成功",
+              type: "success"
+            });
+          }
+
+          this.$parent.addSuccess();
+          this.$parent.initData();
+        })
+        .catch(error => {
+          this.$message({
+            message: error.response.data.message,
+            type: "error"
+          });
+          this.$parent.addSuccess();
+          this.$parent.initData();
+        });
     }
   },
   async mounted() {
     let regionData = await getRegions();
     this.regions = regionData.data;
+    let locationData = await getLocations();
+    this.locations = locationData.data;
+  },
+  computed: {
+    locationFilter() {
+      let a = this.locations.filter(
+        location => location.regionId === this.form.regionId
+      );
+      this.form.locationId = "";
+      return a;
+    }
   }
 };
 </script>

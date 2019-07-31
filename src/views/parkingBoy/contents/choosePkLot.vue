@@ -1,5 +1,7 @@
 <template>
     <div class="choose-pklot-pane">
+         <mt-header title="选择停车点" style="font-size:20px;">
+         </mt-header>
         <div class="back">
             <i class="el-icon-back" @click="$router.go(-1)"></i>
         </div>
@@ -59,8 +61,14 @@ export default {
   mounted() {},
 
   created() {
-    console.log(this.$route)
-    this.orderId = this.$route.query.orderId;
+     this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
+    this.orderId = this.$route.params.orderId;
+
+    console.log(this.orderId,"还有谁")
     this.initLotsData();
     this.initShareLotsData();
   },
@@ -68,7 +76,6 @@ export default {
   methods: {
     async initLotsData(){
         const data = await getPkLots(this.orderId);
-        console.log(data.data)
         this.lots = data.data;
     },
     async initShareLotsData(){
@@ -99,8 +106,8 @@ export default {
     chooseShareLot(item){
       this.$dialog
         .confirm({
-          title: "选择停车地点",
-          message: "确认抢单，并将车停往" + item.parkingLotName + "?"
+          title: "选择停车点",
+          message: "确认停车点，请尽快将车停往" + item.parkingLotName + "?"
         })
         .then(() => {
           console.log("yes");
@@ -119,11 +126,13 @@ export default {
     async grapOrder(data){
       const res = await chooseLotInOrder(data);
       if(res.status == 200){
-        this.$message({
-          message: '抢单成功，请尽快前往交接地点',
-          type: 'success'
-        });
-        this.$router.push('/parkingBoy/order-pkb');
+        this.$Toast({
+            type: "success",
+            message: "选择成功,请尽快前往交接地点",
+            duration: 2000
+          });
+        
+        this.$router.push({name:'我的订单_P'});
       }
     }
   },

@@ -33,24 +33,25 @@ let router = new Router({
                 {
                     path: '/parkingBoy/serve-pkb',
                     component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue'),
-                    name:"服务厅",
+                    name:"服务厅_P",
                     children: []
                 },
                 {
                     path: '/parkingBoy/pkOrderDetail',
                     component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
                 },
-                {
-                    path: '/choosePkLot',
-                    name:'选择停车场',
-                    component: () => import('@/views/parkingBoy/contents/choosePkLot'),
-                },
+               
                 {
                     path: '/parkingBoy/order-pkb',
-                    name:'我的订单',
+                    name:'我的订单_P',
                     component: () => import('@/views/parkingBoy/contents/history.vue')
                 }
             ]
+        },
+        {
+            path: '/choosePkLot',
+            name:'选择停车场',
+            component: () => import('@/views/parkingBoy/contents/choosePkLot'),
         },
         {
             path: '/custom',
@@ -58,17 +59,17 @@ let router = new Router({
             children: [
                 {
                     path: '/custom/serve',
-                    name: '服务厅',
+                    name: '服务厅_C',
                     component: () => import('@/views/custom/contents/serve.vue')
                 },
                 {
                     path: '/custom/order',
-                    name: '我的订单',
+                    name: '我的订单_C',
                     component: () => import('@/views/custom/contents/order.vue')
                 },
                 {
                     path: '/custom/share',
-                    name: '共享',
+                    name: '共享_C',
                     component: () => import('@/views/custom/contents/share.vue')
                 }
             ]
@@ -77,45 +78,4 @@ let router = new Router({
     ]
 })
 
-// router.beforeEach((to, from, next) => {
-//     if (to.path.startsWith('/login')) {
-//         window.localStorage.removeItem('access-token')
-//         next()
-//     } else if (to.path.startsWith('/signinAccount')) {
-//         next()
-//     } else {
-//         let token = window.localStorage.getItem('access-token')
-//         if (!token) {
-//             next({ path: '/login' })
-//         } else {
-//             next()
-//         }
-
-//     }
-// })
-
 export default router
-
-// export default new Router({
-//   mode: 'history',
-//   base: process.env.BASE_URL,
-//   routes: [
-//     {
-//       path: '/',
-//       redirect: '/login'
-//     },
-//     {
-//       path: '/about',
-//       name: 'about',
-//       component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
-//     },
-//     {
-//       path: '/login',
-//       component: loginDemo
-//     },
-//     {
-//       path: '/main',
-//       component: () => import('@/views/main/index.vue')
-//     }
-//   ]
-// })

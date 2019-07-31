@@ -12,7 +12,7 @@
     </div>
 
     <mt-tabbar v-model="selected">
-      <mt-tab-item id="serve-pkb">
+      <mt-tab-item id="服务厅_P">
         <i class="el-icon-s-order" slot="icon"></i>
         抢单
       </mt-tab-item>
@@ -20,11 +20,11 @@
         <i class="el-icon-map-location" slot="icon"></i>
         <span @click="getMsg">停取</span>
       </mt-tab-item> -->
-      <mt-tab-item id="order-pkb">
+      <mt-tab-item id="我的订单_P">
         <i class="el-icon-notebook-2" slot="icon"></i>
         我的订单
       </mt-tab-item>
-      <mt-tab-item id="my-pkb">
+      <mt-tab-item id="我的_P">
         <i class="el-icon-user" slot="icon"></i>
         我的
       </mt-tab-item>
@@ -37,18 +37,23 @@ import { get } from '@/utils/http'
 export default {
   data () {
     return {
-      selected: 'serve-pkb',
+      selected: '服务厅_P',
       // titleName:'服务厅'
     }
   },
   watch: {
+       $route(to,from){
+           
+          this.selected = to.name;
+
+      },
     selected(val, oldVal) {
-      this.$router.push('/parkingBoy/'+val);
+      this.$router.push({name:val});
     }
   },
   computed:{
     titleName(){
-      return this.$route.name;
+      return this.$route.name.split('_')[0];
     }
   },
   created(){

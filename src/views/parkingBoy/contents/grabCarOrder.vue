@@ -1,6 +1,6 @@
 <template>
-  <div class="grab-car-order-container">
-    <!-- <van-cell
+    <div class="grab-car-order-container">
+        <!-- <van-cell
       v-for="(item,index) in orderList"
       :key="index"
       num="2"
@@ -11,30 +11,109 @@
         <span>无</span>
       </template>
     </van-cell>-->
-    <!-- <mt-cell v-for="(item,index) in orderList" :key="index" :title="item.carNum"  value="带 icon"></mt-cell>   -->
+        <!-- <mt-cell v-for="(item,index) in orderList" :key="index" :title="item.carNum"  value="带 icon"></mt-cell>   -->
+        <!-- <div class="order-list">
+            <div v-for="order in orderList" :key="order.id" @click="activeIndex = order.id">
+                <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
+                    <div class="order-body">
+                        <van-panel :title="order.carNum" :desc="dateFormat(order.createTime)" :status="changeStatus(order.status)">
+                            <div>
+                                 <p>
+                                    <label>订单类型：</label>
+                                    {{order.type|orderTypeFilter}}
+                                </p>
+                                <p>
+                                    <label>区域：</label>
+                                    {{order.regionName}}
+                                </p>
+                                <P>
+                                    <label>交接地点：</label>
+                                    {{order.parkingWaitLocation}}
+                                </P>
+                                <p>
+                                    <label>预计交接时间：</label>
+                                    {{order.scheduledParkingArriveTime}}
+                                </p>
+                                <p>
+                                    <label>预计停车时长：</label>
+                                    {{order.scheduledParkingTime+'小时'}}
+                                </p>
+                                <p v-if="order.parkingLocation != undefined || order.parkingLocation != null">
+                                    <label>车辆位置：</label>
+                                    {{order.parkingLocation}}
+                                </p>
+                                <p>
+                                    <label>联系电话：</label>
+                                    {{order.phoneUser}}
+                                </p>
+                                <p v-if="order.endTime != undefined || order.endTime != null">
+                                    <label>完成时间：</label>
+                                    {{dateFormat(order.endTime)}}
+                                </p>
+                            </div>
+                            <div slot="footer" style="text-align:right;">
+                                <van-button @click="chooseLost(order)" v-if="isNotHavaPkLot(order)" type="info">选择停车点</van-button>
+                                <van-button v-if="isCompletePark(order)" type="info" @click="completePark(order)">已停车</van-button>
+                                <van-button v-if="isCompleteFetch(order)" type="info">车已交付</van-button>
+                            </div>
+                        </van-panel>
+                    </div>
+                </el-card>
+            </div>
+        </div> -->
+        <div class="order-list">
+            <div v-for="order in orderList" :key="order.id" @click="active(order.id)">
+                <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
+                    <div class="order-body">
+                        <van-panel :title="carNum(order)" :desc="order.parkingWaitLocation" :status="changeStatus(order.status)">
+                            <div>
+                                <p>
+                                    <label>订单类型：</label>
+                                    {{order.type|orderTypeFilter}}
+                                </p>
+                                <p>
+                                    <label>区域：</label>
+                                    {{order.regionName}}
+                                </p>
+                                <P>
+                                    <label>交接地点：</label>
+                                    {{order.parkingWaitLocation}}
+                                </P>
+                                <p>
+                                    <label>预计交接时间：</label>
+                                    {{order.scheduledParkingArriveTime}}
+                                </p>
+                                <p>
+                                    <label>预计停车时长：</label>
+                                    {{order.scheduledParkingTime+'小时'}}
+                                </p>
+                                <p>
+                                    <label>联系电话：</label>
+                                    {{order.phoneUser}}
+                                </p>
 
-    <div class="order-list">
-      <div v-for="order in orderList" :key="order.id">
-        <el-card class="box-card" style="width: 100%;" shadow="hover">
+                            </div>
+                            <div slot="footer" style="text-align:right;">
+                                <van-button type="info" @click="grabOrder(order)">抢单</van-button>
+                            </div>
+                        </van-panel>
+                    </div>
+                </el-card>
+                <!-- <el-card class="box-card" style="width: 100%;" shadow="hover">
           <div class="card-body">
             <el-row>
               <el-col :span="4" :offset="1">
                 <span class="circle">
                   <p >{{order.type|orderTypeFilter}}</p>
                 </span>
-                <!-- <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar> -->
               </el-col>
               <el-col :span="10" :offset="1">
                 <div class="order-content-mid">
                   <div v-if="order.status == 'PW'">
                     <p class="order-carNum">{{order.carNum}}</p>
                     <p class="wait-location">车辆交接点: {{order.parkingWaitLocation}}</p>
-                    <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
                   </div>
-                  <!-- <div v-if="order.status == 'FW'">
-                    <p class="order-carNum">{{order.carNum}}</p>
-                    <p class="wait-location">取车交接点: {{order.fetchWaitLocation}}</p>
-                  </div> -->
+             
                 </div>
               </el-col>
 
@@ -46,12 +125,13 @@
               </el-col>
             </el-row>
           </div>
-        </el-card>
-      </div>
-    </div>
+        </el-card> -->
 
-    <parking-order-detail ref='window' :order="orderDetail"  />
-  </div>
+            </div>
+        </div>
+
+        <parking-order-detail ref='window' :order="orderDetail" />
+    </div>
 </template>
 
 <script>
@@ -59,44 +139,81 @@ import { formatDate, formatDate2 } from "@/utils/data.js";
 import { getOrders } from "../../../api/order";
 import moment from "moment";
 import parkingOrderDetail from "@/views/parkingBoy/contents/parkingOrderDetail.vue";
+import handle from "../../../utils/formateHandle.js";
+import {grapOrder} from '../../../api/order'
+
 export default {
   data() {
     return {
       orderDetail: {},
-      orderList: []
+      orderList: [],
+      activeIndex: -1
     };
   },
   methods: {
     showDetail(order) {
-      this.$refs['window'].show = true;
-      order.createTime = moment(order.createTime).format('YYYY MM DD hh:mm:ss');
+      this.$refs["window"].show = true;
+      order.createTime = moment(order.createTime).format("YYYY MM DD hh:mm:ss");
       // order.createTime = formatDate2(order.createTime);
       // order.status = order.status == 'PW' ? '停车等待受理' : '取车等待受理';
       this.orderDetail = order;
-    }, 
-    closeDetailreturnFalse() {
-
     },
-    async initData(){
+    closeDetailreturnFalse() {},
+    async initData() {
       const res = await getOrders("PW");
       this.orderList = res.data;
-    console.log(this.orderList)
+      console.log(this.orderList);
+    },
+    changeStatus(val) {
+      return handle.changeStatusToString(val, "boy");
+    },
+    carNum(order) {
+      let type = order.type == 1 ? "取" : "停";
+      return order.carNum + "（" + type + "）";
+    },
+    async grabOrder(order) {
+      console.log(order.id);
+      const res = await grapOrder(order.id);
+      console.log(res.data + "xxxxx");
+      this.$Toast({
+            type: "success",
+            message: "抢单成功",
+            duration: 2000
+          });
+       this.$router.push({
+        name: "选择停车场",
+        params: { orderId: order.id }
+      });
+      this.show = false;
+    },
+     active(id){
+        if(this.activeIndex == id) {
+            this.activeIndex = -1;
+            return;
+        }
+        this.activeIndex = id;
     }
   },
-  created() {},
+  created() {
+       this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
+      this.initData();
+  },
   mounted() {
-    this.initData();
     
   },
   components: {
     parkingOrderDetail
   },
-  filters:{
-     orderTypeFilter(val) {
+  filters: {
+    orderTypeFilter(val) {
       if (val == 1) {
-        return "取";
+        return "取车";
       }
-      return "停";
+      return "停车";
     }
   }
 };
@@ -110,52 +227,58 @@ export default {
   &::-webkit-scrollbar {
     display: none;
   }
+
   .order-list {
+    .order-body {
+      color: #969799;
+      font-size: 14px;
+      .van-cell__title {
+        font-size: 24px;
+      }
+      .van-panel__content {
+        padding: 5px 18px;
+        // text-align: center;
+      }
+      & label {
+        display: inline-block;
+        width: 120px;
+        text-align: right;
+      }
+      & p {
+        margin: 10px 0;
+      }
+    }
+    .isActive {
+      .van-panel {
+        height: 290px;
+        transition: height 0.6s;
+      }
+    }
+    .van-panel {
+      height: 65px;
+      transition: height 0.6s;
+    }
     .el-card__body {
       padding: 0;
       text-align: left;
-      height: 80px;
       padding: 10px 0 0 0;
+      transition: height 0.6s;
     }
     .card-body {
       position: relative;
     }
-  }
-
-  .order-content-mid {
+    .right {
       font-size: 16px;
-      .order-carNum {
-        margin-top: 10px;
-        // font-size: 16px;
-        color: #458e28;
-      }
-      .wait-location {
-        margin-top: 24px;
+      padding: 0;
+      color: #a2a2a2;
 
-      }
-      .order-create-time {
-        margin-top: 10px;
+      .el-button {
+        position: relative;
+        left: -40px;
+        top: 14px;
+        // width:20px;
       }
     }
-  .circle {
-    display: inline-block;
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    background: #f3ada1;
-    line-height: 60px;
-    // margin-left: 20px;
-    & p {
-      // margin:0 auto;
-      font-size: 23px;
-      margin-left: 18px;
-    }
-  }
-  .right {
-    font-size: 16px;
-    line-height: 0px;
-    color: #a2a2a2;
-    margin-top: 28px;
   }
 }
 .grab-car-order-cell-value {
