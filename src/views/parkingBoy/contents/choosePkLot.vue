@@ -59,8 +59,8 @@ export default {
   mounted() {},
 
   created() {
-    console.log(this.$route)
-    this.orderId = this.$route.query.orderId;
+    
+    this.orderId = this.$route.params.orderId;
     this.initLotsData();
     this.initShareLotsData();
   },
@@ -99,8 +99,8 @@ export default {
     chooseShareLot(item){
       this.$dialog
         .confirm({
-          title: "选择停车地点",
-          message: "确认抢单，并将车停往" + item.parkingLotName + "?"
+          title: "选择停车点",
+          message: "确认停车点，请尽快将车停往" + item.parkingLotName + "?"
         })
         .then(() => {
           console.log("yes");

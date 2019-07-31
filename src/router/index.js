@@ -33,7 +33,7 @@ let router = new Router({
                 {
                     path: '/parkingBoy/serve-pkb',
                     component: () => import('@/views/parkingBoy/contents/grabCarOrder.vue'),
-                    name:"服务厅",
+                    name:"服务厅_P",
                     children: []
                 },
                 {
@@ -47,7 +47,7 @@ let router = new Router({
                 },
                 {
                     path: '/parkingBoy/order-pkb',
-                    name:'我的订单',
+                    name:'我的订单_P',
                     component: () => import('@/views/parkingBoy/contents/history.vue')
                 }
             ]
@@ -58,17 +58,17 @@ let router = new Router({
             children: [
                 {
                     path: '/custom/serve',
-                    name: '服务厅',
+                    name: '服务厅_C',
                     component: () => import('@/views/custom/contents/serve.vue')
                 },
                 {
                     path: '/custom/order',
-                    name: '我的订单',
+                    name: '我的订单_C',
                     component: () => import('@/views/custom/contents/order.vue')
                 },
                 {
                     path: '/custom/share',
-                    name: '共享',
+                    name: '共享_C',
                     component: () => import('@/views/custom/contents/share.vue')
                 }
             ]

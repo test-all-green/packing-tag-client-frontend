@@ -7,7 +7,7 @@
       <el-tabs type="border-card">
         <el-tab-pane>
           <span slot="label">未发布</span>
-          <div v-for="item in sharedParkingLot.filter(lot => lot.status === 0)" :key="item.id">
+          <div v-for="item in $store.state.shareParkingLotList.filter(lot => lot.status === 0)" :key="item.id">
             <el-card class="box-card">
               <div class="card-body">
                 <el-row>
@@ -25,7 +25,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="已发布">
-          <div v-for="item in sharedParkingLot.filter(lot => lot.status === 1)" :key="item.id">
+          <div v-for="item in $store.state.shareParkingLotList.filter(lot => lot.status === 1)" :key="item.id">
             <el-card class="box-card">
               <div class="card-body">
                 <el-row>
