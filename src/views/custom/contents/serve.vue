@@ -1,6 +1,6 @@
 <template>
     <div class="serve">
-        <div class="back">
+        <!-- <div class="back">
             <i class="el-icon-back" @click="back" v-if="inputing !== 'none'"></i>
         </div>
         <div v-if="inputing === 'none'" class="serve-btn ">
@@ -11,12 +11,12 @@
                 <el-button type="primary" @click="fetch">取车</el-button>
             </el-row>
         </div>
-        <div v-if="inputing == 'parking'">
+        <div v-if="inputing == 'parking'"> -->
             <parking :type="0"></parking>
-        </div>
+        <!-- </div>
         <div v-if="inputing == 'fetch'">
             <parking :type="1"></parking>
-        </div>
+        </div> -->
 
     </div>
 </template>

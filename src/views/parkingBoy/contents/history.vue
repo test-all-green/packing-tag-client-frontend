@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { getHistoryOrder } from '@/api/order.js'
+
 export default {
   data() {
     return {
@@ -65,9 +67,17 @@ export default {
 
   mounted() {},
 
-  created() {},
+  created() {
+    this.initHistoryOrder();
+  },
 
-  methods: {},
+  methods: {
+    async initHistoryOrder() {
+      const data = await getHistoryOrder();
+      console.log('load historyOrder...', data.data)
+      this.orderList = data.data
+    }
+  },
 
   filters: {
     orderTypeFilter(val) {
