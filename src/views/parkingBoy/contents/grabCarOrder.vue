@@ -28,14 +28,13 @@
                 <div class="order-content-mid">
                   <div v-if="order.status == 'PW'">
                     <p class="order-carNum">{{order.carNum}}</p>
-                    <p class="wait-location">停车交接点: {{order.parkingWaitLocation}}</p>
+                    <p class="wait-location">车辆交接点: {{order.parkingWaitLocation}}</p>
                     <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
                   </div>
-                  <div v-if="order.status == 'FW'">
+                  <!-- <div v-if="order.status == 'FW'">
                     <p class="order-carNum">{{order.carNum}}</p>
                     <p class="wait-location">取车交接点: {{order.fetchWaitLocation}}</p>
-                    <!-- <p class="order-create-time">订单时间: {{order.createTime}}</p> -->
-                  </div>
+                  </div> -->
                 </div>
               </el-col>
 
