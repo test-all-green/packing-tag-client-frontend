@@ -43,7 +43,9 @@ export default {
   },
   watch: {
        $route(to,from){
+           
           this.selected = to.name;
+
       },
     selected(val, oldVal) {
       this.$router.push({name:val});

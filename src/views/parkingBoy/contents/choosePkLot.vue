@@ -1,5 +1,7 @@
 <template>
     <div class="choose-pklot-pane">
+         <mt-header title="选择停车点" style="font-size:20px;">
+         </mt-header>
         <div class="back">
             <i class="el-icon-back" @click="$router.go(-1)"></i>
         </div>
@@ -123,7 +125,7 @@ export default {
           message: '抢单成功，请尽快前往交接地点',
           type: 'success'
         });
-        this.$router.push('/parkingBoy/order-pkb');
+        this.$router.push({name:'我的订单_P'});
       }
     }
   },

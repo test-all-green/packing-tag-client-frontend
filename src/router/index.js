@@ -40,17 +40,18 @@ let router = new Router({
                     path: '/parkingBoy/pkOrderDetail',
                     component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
                 },
-                {
-                    path: '/choosePkLot',
-                    name:'选择停车场',
-                    component: () => import('@/views/parkingBoy/contents/choosePkLot'),
-                },
+               
                 {
                     path: '/parkingBoy/order-pkb',
                     name:'我的订单_P',
                     component: () => import('@/views/parkingBoy/contents/history.vue')
                 }
             ]
+        },
+        {
+            path: '/choosePkLot',
+            name:'选择停车场',
+            component: () => import('@/views/parkingBoy/contents/choosePkLot'),
         },
         {
             path: '/custom',
