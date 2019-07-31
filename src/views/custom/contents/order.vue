@@ -1,6 +1,5 @@
 <template>
     <div class="order-user-show">
-        
         <div v-for="item in OrderData" :key="item.id">
             <el-card class="box-card" :class="{'timeout':item.status =='已完成'||item.status =='取消'}">
                 <div class="card-body">
@@ -25,7 +24,6 @@
                 </div>
             </el-card>
         </div>
-
     </div>
 </template>
 
@@ -35,27 +33,20 @@ import {getHistoryOrder} from '../../../api/order'
 export default {
   data() {
     return {
-      OrderData: [ ]
+      OrderData: []
     };
   },
-
   components: {},
-
   computed: {},
-
-  mounted() {},
-
   created() {
       this.initData();
   },
-
   methods: {
       async initData(){
         const data = await getHistoryOrder();
         this.OrderData = data.data;
       }
   },
-
   filters: {
       dateFilter(val){
           moment(val).format('YYYY MM DD, HH:mm:ss')
