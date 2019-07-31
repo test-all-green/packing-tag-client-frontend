@@ -18,3 +18,11 @@ export function grapOrder(orderId){
 export function getPkHistoryOrder(){
     return get('http://localhost:8088/parking-orders/historys-employees');
 }
+export function getUserOrderDetail(param) {
+    let id = param.id;
+    let requestParam = {
+        "type": param.type
+    }
+    return get('http://localhost:8088/parking-orders/' + id + "/types", {type: param.type});  //....
+}
+

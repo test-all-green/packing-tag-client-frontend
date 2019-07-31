@@ -1,9 +1,9 @@
 <template>
   <div class="order-user-show">
-    <div class="back-to-list" v-if="this.isInDetailPage" @click="backToList">
+    <div class="back-to-list" v-if="this.isInDetailPage == 'orderDetailPage'" @click="backToList">
       <i class="el-icon-back"></i>
     </div>
-    <div class="user-orderList-wrapper" v-if="!this.isInDetailPage">
+    <div class="user-orderList-wrapper" v-if="this.isInDetailPage == 'orderListPage'">
       <div v-for="item in OrderData" :key="item.id">
         <el-card class="box-card" :class="{'timeout':item.status =='已完成'||item.status =='取消'}">
           <div class="card-body">
@@ -15,7 +15,7 @@
               </el-col>-->
               <el-col :span="9" :offset="2">
                 <p class="carNum-text">{{item.carNum == '' ? '粤BWUZHI' : item.carNum}}</p>
-                <p class="status-text">状态：{{item.status|orderStatusFileter}}</p>
+                <p class="status-text">状态：{{orderStatusFileter(item.status)}}</p>
               </el-col>
               <el-col :span="4" :offset="8">
                 <div class="right" @click="showDetailPage(item)">
@@ -29,50 +29,100 @@
       </div>
     </div>
 
-    <div class="user-order-detail-page" v-if="this.isInDetailPage">
+    <div class="user-order-detail-page" v-if="this.isInDetailPage == 'orderDetailPage'">
       <van-panel
         :title="this.orderItem.carNum"
-        :desc="this.orderItem.parkingCreateTime"
+        :desc="this.orderItem.createTime"
         :status="this.orderItem.status"
       >
         <div class="detail-content-container">
           <div class="detail-info">
             <el-row>
-              <el-col :span="7" :offset="2">服务人: </el-col>
-              <el-col :span="10">{{this.orderItem.parkingBoyName}}</el-col>
+              <el-col :span="7" :offset="2">服务人:</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingBoyName}}</el-col>
             </el-row>
             <el-row>
               <el-col :span="7" :offset="2">联系电话：</el-col>
-              <el-col :span="10">{{this.orderItem.parkingBoyPhone}}</el-col>
+              <el-col :span="10">{{this.parkOrderItem.phoneEmployee}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">区域：</el-col>
+              <el-col :span="10">{{this.parkOrderItem.regionName}}</el-col>
             </el-row>
             <el-row>
               <el-col :span="7" :offset="2">交接点：</el-col>
-              <el-col :span="10">{{this.orderItem.parkingWaitLocation}}</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingWaitLocation}}</el-col>
             </el-row>
             <el-row>
               <el-col :span="7" :offset="2">停车地点：</el-col>
-              <el-col :span="10">{{this.orderItem.parkingLocation}}</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingLocation}}</el-col>
             </el-row>
           </div>
         </div>
+
+        <div class="detail-content-container" v-if="this.fetchOrderItem.id !== undefined">
+          <van-divider></van-divider>
+          <div class="detail-info">
+            <el-row>
+              <el-col :span="7" :offset="2">服务人:</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingBoyName}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">联系电话：</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingBoyPhone}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">交接点：</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingWaitLocation}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">停车地点：</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingLocation}}</el-col>
+            </el-row>
+          </div>
+        </div>
+
         <div slot="footer" class="detail-content-footer">
           <el-row>
-            <el-col :span="10" :offset="1">
-              <van-button size="large">取车</van-button>
+            <!-- <el-col :span="10" :offset="1" v-if="this.fetchOrderItem.id !== undefined">
+              <van-button size="large" disabled>呼叫取车</van-button>
+            </el-col>-->
+            <el-col :span="22" :offset="1" v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status !== 'WT'">
+              <van-button size="large" @click="callFetchCar(orderItem)">呼叫取车</van-button>
             </el-col>
-            <el-col :span="10" :offset="1">
+            <!-- <el-col :span="10" :offset="1">
               <van-button size="large" type="danger">支付订单</van-button>
+            </el-col>-->
+          </el-row>
+          <el-row>
+            <el-col :span="22" :offset="1" style="margin-top:10px;">
+              <van-button
+                size="large"
+                type="danger"
+                disabled
+                v-if="this.fetchOrderItem.id == undefined"
+              >支付订单</van-button>
+              <van-button
+                size="large"
+                type="danger"
+                v-if="this.fetchOrderItem.id !== undefined"
+              >支付订单</van-button>
             </el-col>
           </el-row>
         </div>
       </van-panel>
+    </div>
+
+    <!-- 取车订单 -->
+    <div class="user-call-fetch-car-page" v-if="this.isInDetailPage == 'fetchCarPage'">
+
     </div>
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import { getHistoryOrder } from "../../../api/order";
+import { getHistoryOrder, getUserOrderDetail } from "../../../api/order";
 export default {
   data() {
     return {
@@ -96,8 +146,10 @@ export default {
           regionId: "1"
         }
       ],
-      isInDetailPage: false,
-      orderItem: {}
+      isInDetailPage: 'orderListPage',
+      orderItem: {},
+      parkOrderItem: {},
+      fetchOrderItem: {}
     };
   },
 
@@ -115,23 +167,80 @@ export default {
     async initData() {
       const data = await getHistoryOrder();
       this.OrderData = data.data;
+      console.log("initData", this.OrderData)
     },
 
-    showDetailPage(order) {
-      this.isInDetailPage = true;
-      this.orderItem = order;
-      this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
+    callFetchCar(order) {
+        console.log("callFetchCar..", order)
+        // this.isInDetailPage = 'fetchCarPage';
+        let data = {
+            "order": order,
+            "type": 1
+        }
+        this.$router.push({path: '/custom/serve', query: data})
+
     },
+
+    async showDetailPage(order) {
+      this.orderItem = {};
+      this.parkOrderItem = {};
+      this.fetchOrderItem = {};
+      if (order.type == null) {
+        this.$message({
+          message: "暂无人处理",
+          type: "warning"
+        });
+
+        this.orderItem = order;
+        this.isInDetailPage = 'orderDetailPage';
+        this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
+        this.orderItem.createTime = moment(this.orderItem.createTime).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        return;
+      }
+      this.isInDetailPage = 'orderDetailPage';
+      let param = {
+        id: order.id,
+        type: order.type
+      };
+      console.log("param...", param);
+      const data = await getUserOrderDetail(param);
+      this.order = data.data;
+
+      console.log("all...", this.order);
+
+      this.parkOrderItem = this.order.parkOrder;
+      this.fetchOrderItem = this.order.fetchOrder;
+
+      if (this.fetchOrderItem.carNum !== undefined) {
+        this.orderItem = this.fetchOrderItem;
+      } else {
+        this.orderItem = this.parkOrderItem;
+      }
+      console.log("parking..", this.order.parkOrder);
+      console.log("fetOrder", this.order.fetchOrder);
+      console.log("orderItem..", this.orderItem);
+
+      this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
+      this.orderItem.createTime = moment(this.orderItem.createTime).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+    },
+
     backToList() {
-      this.isInDetailPage = false;
+      this.isInDetailPage = 'orderListPage';
     },
 
     orderStatusFileter(val) {
       let map = {
         PW: "无人受理",
-        PI: "停取中",
+        PI: "存取中",
         F: "已完成",
-        C: "取消订单"
+        C: "取消订单",
+        GI: "前往地点",
+        WP: "待支付",
+        FW: "等待取车受理",
       };
       return map[val];
     }
@@ -141,15 +250,6 @@ export default {
     dateFilter(val) {
       moment(val).format("YYYY MM DD, HH:mm:ss");
     },
-    orderStatusFileter(val) {
-      let map = {
-        PW: "无人受理",
-        PI: "停取中",
-        F: "已完成",
-        C: "取消订单"
-      };
-      return map[val];
-    }
   }
 };
 </script>
@@ -180,11 +280,14 @@ export default {
     .detail-content-container {
       padding: 15px 0;
       .detail-info {
-          color: #584f4f;
-          .el-row {
-              font: 14px/2 Tahoma,Helvetica,Arial,'宋体',sans-serif;
-          }
+        color: #584f4f;
+        .el-row {
+          font: 14px/2 Tahoma, Helvetica, Arial, "宋体", sans-serif;
+        }
       }
+    }
+    .van-panel__footer {
+      padding: 20px 10px;
     }
   }
   .back-to-list {
