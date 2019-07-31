@@ -28,6 +28,8 @@ pipeline {
             }
             steps {
                 sh '''
+                    
+                    ssh -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa root@39.98.243.100 "rm -rf /usr/share/nginx/client/dist"
                     export BUILD_ID=dontKillMe
 scp -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa -r /var/lib/jenkins/workspace/prod-parking-tag-frontend-client/dist root@localhost:/usr/share/nginx/client/
 
