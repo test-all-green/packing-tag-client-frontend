@@ -9,6 +9,9 @@ export function pushOrder(data){
 export function getHistoryOrder(){
     return get('http://localhost:8088/parking-orders/history');
 }
+export function putGrapOrder(data){
+    return put('http://localhost:8088/parking-orders/grabOrder',data)
+}
 export function chooseLotInOrder(data){
     return put('http://localhost:8088/parking-orders/grabOrder',data)
 }

@@ -47,24 +47,17 @@ export default {
       isInDetailPage: true
     };
   },
-
   components: {},
-
   computed: {},
-
-  mounted() {},
-
   created() {
     this.initData();
   },
-
   methods: {
     async initData() {
       const data = await getHistoryOrder();
       this.OrderData = data.data;
     }
   },
-
   filters: {
     dateFilter(val) {
       moment(val).format("YYYY MM DD, HH:mm:ss");
