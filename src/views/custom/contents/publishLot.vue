@@ -50,13 +50,16 @@
       </el-col>
     </el-row>
     <el-row type="flex" justify="center" class="submit-btn">
+      <mt-button class="Btn" type="danger" size="normal" @click="deleteById">删除</mt-button>
       <mt-button class="Btn" type="primary" size="normal" @click="submit">发布</mt-button>
-      <mt-button class="Btn" type="primary" size="normal" @click="submit">删除</mt-button>
     </el-row>
   </div>
 </template>
 <script>
-import { publishShareParkingLot } from "../../../api/shared";
+import {
+  publishShareParkingLot,
+  deleteShareParkingLot
+} from "../../../api/shared";
 import { getRegionById, getRegions } from "../../../api/region";
 import { getLocations } from "../../../api/location";
 import moment from "moment";
@@ -127,7 +130,7 @@ export default {
         !this.form.regionId ||
         !this.form.beginTime ||
         !this.form.endTime
-      ){
+      ) {
         this.$message({
           message: "输入信息不完整，请重新输入",
           type: "error"
@@ -144,12 +147,23 @@ export default {
         this.$parent.addSuccess();
         this.$parent.initData();
       }
+    },
+    async deleteById() {
+      const data = await deleteShareParkingLot(this.item.id);
+      if (data.status == 200) {
+        this.$message({
+          message: "删除共享车位成功",
+          type: "success"
+        });
+      }
+      this.$parent.addSuccess();
+      this.$parent.initData();
     }
   }
 };
 </script>
 <style>
-.Btn{
-  margin: 20px
+.Btn {
+  margin: 20px;
 }
 </style>
