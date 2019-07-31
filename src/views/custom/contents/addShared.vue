@@ -54,7 +54,7 @@ export default {
       regions: [],
       locations: [],
       rules: {
-        location: [
+        locationId: [
           { required: true, message: "请输入车位详细地址", trigger: "blur" }
         ],
         parkingLotName: [
@@ -65,25 +65,51 @@ export default {
     };
   },
   methods: {
-    async submit() {
+    submit() {
       console.log(this.form);
-      if(this.form.parkingLotName || this.form.locationId || this.form.regionId){
-          this.$message({
-              message:"输入信息不完整，请重新输入",
-              type:"error"
-          });
-          return;
-      }
-      const data = await postShareParkingLot(this.form);
-      console.log(data);
-      if (data.status == 201) {
+      if (
+        !this.form.parkingLotName ||
+        !this.form.locationId ||
+        !this.form.regionId
+      ) {
         this.$message({
-          message: "添加共享车位成功",
-          type: "success"
+          message: "输入信息不完整，请重新输入",
+          type: "error"
         });
-        this.$parent.addSuccess();
-        this.$parent.initData();
+        return;
       }
+      //   const data = await postShareParkingLot(this.form);
+      //   console.log(data);
+      //   if (data.status == 201) {
+      //     this.$message({
+      //       message: "添加共享车位成功",
+      //       type: "success"
+      //     });
+      //     this.$parent.addSuccess();
+      //     this.$parent.initData();
+      //   }
+
+      postShareParkingLot(this.form)
+        .then(Response => {
+          console.log(Response);
+          if (Response.status == 201) {
+            this.$message({
+              message: "添加共享车位成功",
+              type: "success"
+            });
+          }
+
+          this.$parent.addSuccess();
+          this.$parent.initData();
+        })
+        .catch(error => {
+          this.$message({
+            message: error.response.data.message,
+            type: "error"
+          });
+          this.$parent.addSuccess();
+          this.$parent.initData();
+        });
     }
   },
   async mounted() {
@@ -94,11 +120,11 @@ export default {
   },
   computed: {
     locationFilter() {
-      let a=this.locations.filter(
+      let a = this.locations.filter(
         location => location.regionId === this.form.regionId
       );
-      this.form.locationId = ''
-      return a
+      this.form.locationId = "";
+      return a;
     }
   }
 };

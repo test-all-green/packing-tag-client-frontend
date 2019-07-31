@@ -25,7 +25,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="已发布">
-          <div v-for="item in sharedParkingLot.filter(lot => lot.status === 1)" :key="item.id">
+          <div v-for="item in sharedParkingLot.filter(lot => lot.status === 1 || lot.status === 2)" :key="item.id">
             <el-card class="box-card">
               <div class="card-body">
                 <el-row>
@@ -37,6 +37,7 @@
                       <i class="el-icon-right" @click="sharedLotDetail(item)"></i>
                     </div>
                   </el-col>
+                  
                 </el-row>
               </div>
             </el-card>
