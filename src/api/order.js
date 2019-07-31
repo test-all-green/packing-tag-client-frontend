@@ -21,3 +21,6 @@ export function grapOrder(orderId){
 export function getPkHistoryOrder(){
     return get('http://localhost:8088/parking-orders/historys-employees');
 }
+export function completeOrder(orderId){
+    return put('http://localhost:8088/parking-orders/finishedOrder/'+orderId);
+}

@@ -33,8 +33,9 @@
                         </p>
                         <p>
                             <label>联系电话：</label>
-                            {{order.phone}}
+                            {{order.phoneUser}}
                         </p>
+                        
                     </div>
                     <div slot="footer">
                         <van-button size="small" @click="back">返回</van-button>
@@ -108,15 +109,15 @@ export default {
 };
 </script>
 <style lang='scss' >
-.toast{
-    height: 60px;
-    width: 120px;
-}
-.mint-toast-text{
-    font-size:24px;
-    // padding-top:10px;
-    line-height: 40px;
-}
+// .toast{
+//     height: 60px;
+//     width: 120px;
+// }
+// .mint-toast-text{
+//     font-size:24px;
+//     // padding-top:10px;
+//     line-height: 40px;
+// }
 .pk-order-detail {
   height: 562px;
   .van-popup {

@@ -63,6 +63,8 @@ export default {
   created() {
     
     this.orderId = this.$route.params.orderId;
+    console.log(this.$route);
+    console.log(this.orderId,"dshds")
     this.initLotsData();
     this.initShareLotsData();
   },

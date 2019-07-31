@@ -1,36 +1,50 @@
 <template>
     <div class="pk-history">
         <div class="order-list">
-            <div v-for="order in orderList" :key="order.id">
-                <el-card class="box-card" style="width: 100%;" shadow="hover">
-                    <div class="card-body">
-                        <el-row>
-                            <el-col :span="4" :offset="1">
-                                <span class="circle">
-                                    <p>{{order.type|orderTypeFilter}}</p>
-                                </span>
-                                <!-- <el-avatar :size="52" src="../../../assets/logo.png"></el-avatar> -->
-                            </el-col>
-                            <el-col :span="10" :offset="1">
-                                <div class="order-content-mid">
-                                    <div>
-                                        <p class="order-carNum">{{order.carNum}}</p>
-                                        <p class="wait-location">交接点: {{order.parkingWaitLocation}}</p>
-                                        <!-- <p class="wait-location">时间:{{order.scheduledParkingArriveTime}}</p> -->
-                                    </div>
-                                </div>
-                            </el-col>
-
-                            <el-col :span="5" :offset="3">
-                                <div class="right">
-                                    <el-button type="primary" v-if="order.status == 'WT'" @click="chooseLost(order)">选择停车点</el-button>
-                                    <div v-if="order.status != 'WT'" style="margin-top:20px;" @click="lookDetail(order)"> 详情
-                                        <i class="el-icon-right"></i>
-                                    </div>
-                                </div>
-                            </el-col>
-
-                        </el-row>
+            <div v-for="order in orderList" :key="order.id" @click="active(order.id)">
+                <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
+                    <div class="order-body">
+                        <van-panel :title="order.carNum" :desc="dateFormat(order.createTime)" :status="changeStatus(order.status)">
+                            <div>
+                                 <p>
+                                    <label>订单类型：</label>
+                                    {{order.type|orderTypeFilter}}
+                                </p>
+                                <p>
+                                    <label>区域：</label>
+                                    {{order.regionName}}
+                                </p>
+                                <P>
+                                    <label>交接地点：</label>
+                                    {{order.parkingWaitLocation}}
+                                </P>
+                                <p>
+                                    <label>预计交接时间：</label>
+                                    {{order.scheduledParkingArriveTime}}
+                                </p>
+                                <p>
+                                    <label>预计停车时长：</label>
+                                    {{order.scheduledParkingTime+'小时'}}
+                                </p>
+                                <p v-if="order.parkingLocation != undefined || order.parkingLocation != null">
+                                    <label>车辆位置：</label>
+                                    {{order.parkingLocation}}
+                                </p>
+                                <p>
+                                    <label>联系电话：</label>
+                                    {{order.phoneUser}}
+                                </p>
+                                <p v-if="order.endTime != undefined || order.endTime != null">
+                                    <label>完成时间：</label>
+                                    {{dateFormat(order.endTime)}}
+                                </p>
+                            </div>
+                            <div slot="footer" style="text-align:right;">
+                                <van-button @click="chooseLost(order)" v-if="isNotHavaPkLot(order)" type="info">选择停车点</van-button>
+                                <van-button v-if="isCompletePark(order)" type="info" @click="completePark(order)">已停车</van-button>
+                                <van-button v-if="isCompleteFetch(order)" type="info">车已交付</van-button>
+                            </div>
+                        </van-panel>
                     </div>
                 </el-card>
             </div>
@@ -39,8 +53,8 @@
 </template>
 
 <script>
-import { getPkHistoryOrder  } from "@/api/order.js";
-
+import { getPkHistoryOrder, completeOrder } from "@/api/order.js";
+import handle from "../../../utils/formateHandle.js";
 export default {
   data() {
     return {
@@ -62,7 +76,8 @@ export default {
         //   regionName: "香洲区",
         //   scheduledParkingArriveTime: "9:00"
         // }
-      ]
+      ],
+      activeIndex: -1
     };
   },
 
@@ -82,24 +97,61 @@ export default {
       console.log("load historyOrder...", data.data);
       this.orderList = data.data;
     },
-    lookDetail(order){
-
+    lookDetail(order) {},
+    chooseLost(order) {
+      console.log("orderId:  " + order.id);
+      this.$router.push({
+        name: "选择停车场",
+        params: { orderId: order.id }
+      });
     },
-    chooseLost(order){
-        console.log("orderId:  "+order.id);
-         this.$router.push({
-          name:'选择停车场',
-          params: { orderId: order.id }
-        });
+    changeStatus(val) {
+      return handle.changeStatusToString(val, "boy");
+    },
+    dateFormat(val) {
+      return handle.dateFormatToString(val);
+    },
+    isNotHavaPkLot(order) {
+      return (
+        order.type == 0 &&
+        (order.parkingLotName == undefined || order.parkingLotName == null)
+      );
+    },
+    isCompletePark(order) {
+      return order.type == 0 && order.status == "PI";
+    },
+    isCompleteFetch(order) {
+      return order.type == 1 && order.status == "PI";
+    },
+    async completePark(order) {
+      if (this.isCompletePark(order)) {
+        const res = await completeOrder(order.id);
+        if (res.data.code == 200) {
+          this.$toast({
+            message: "又完成一单，再接再厉！",
+            type: "success",
+            className: "toast"
+          });
+          this.initHistoryOrder();
+        }
+        console.log(res.data.code);
+      }
+    },
+    active(id){
+        if(this.activeIndex == order.id) {
+            this.activeIndex = -1;
+            return;
+        }
+        this.activeIndex = order.id;
     }
   },
 
   filters: {
     orderTypeFilter(val) {
       if (val == 1) {
-        return "取";
+        return "取车";
       }
-      return "停";
+      return "停车";
     }
   }
 };
@@ -114,43 +166,42 @@ export default {
   }
 
   .order-list {
+    .order-body {
+      color: #969799;
+      font-size: 14px;
+      .van-cell__title {
+        font-size: 24px;
+      }
+      .van-panel__content {
+        padding: 5px 18px;
+        // text-align: center;
+      }
+      & label {
+        display: inline-block;
+        width: 120px;
+        text-align: right;
+      }
+      & p {
+        margin: 10px 0;
+      }
+    }
+    .isActive {
+      .van-panel {
+        height: 320px;
+        transition: height 0.6s;
+      }
+    }
+    .van-panel {
+      height: 65px;
+    }
     .el-card__body {
       padding: 0;
       text-align: left;
-      height: 80px;
       padding: 10px 0 0 0;
+      transition: height 0.6s;
     }
     .card-body {
       position: relative;
-    }
-
-    .order-content-mid {
-      font-size: 16px;
-      .order-carNum {
-        margin-top: 8px;
-        // font-size: 16px;
-        color: #458e28;
-      }
-      .wait-location {
-        margin-top: 8px;
-      }
-      .order-create-time {
-        margin-top: 10px;
-      }
-    }
-    .circle {
-      display: inline-block;
-      height: 60px;
-      width: 60px;
-      border-radius: 50%;
-      background: #f3ada1;
-      line-height: 60px;
-      // margin-left: 20px;
-      & p {
-        // margin:0 auto;
-        font-size: 23px;
-        margin-left: 18px;
-      }
     }
     .right {
       font-size: 16px;
