@@ -67,8 +67,8 @@ export default {
         duration: 500
       });
     this.orderId = this.$route.params.orderId;
-    console.log(this.$route);
-    console.log(this.orderId,"dshds")
+
+    console.log(this.orderId,"还有谁")
     this.initLotsData();
     this.initShareLotsData();
   },
@@ -76,7 +76,6 @@ export default {
   methods: {
     async initLotsData(){
         const data = await getPkLots(this.orderId);
-        console.log(data.data)
         this.lots = data.data;
     },
     async initShareLotsData(){
@@ -127,10 +126,12 @@ export default {
     async grapOrder(data){
       const res = await chooseLotInOrder(data);
       if(res.status == 200){
-        this.$message({
-          message: '抢单成功，请尽快前往交接地点',
-          type: 'success'
-        });
+        this.$Toast({
+            type: "success",
+            message: "选择成功,请尽快前往交接地点",
+            duration: 2000
+          });
+        
         this.$router.push({name:'我的订单_P'});
       }
     }

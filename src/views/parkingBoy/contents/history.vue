@@ -29,7 +29,8 @@
                                 </p>
                                 <p v-if="order.parkingLocation != undefined || order.parkingLocation != null">
                                     <label>车辆位置：</label>
-                                    {{order.parkingLocation}}
+                                    {{order.parkingLotName}}
+                                      <!-- <span v-if="order."></span> -->
                                 </p>
                                 <p>
                                     <label>联系电话：</label>
@@ -143,7 +144,7 @@ export default {
           //     type: "success",
           //     className: "toast"
           //   });
-          this.$Toast.loading({
+          this.$Toast({
             type: "success",
             message: "又完成一单，再接再厉！",
             duration: 2000

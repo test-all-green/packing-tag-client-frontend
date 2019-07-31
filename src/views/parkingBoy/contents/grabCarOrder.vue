@@ -175,7 +175,7 @@ export default {
       console.log(order.id);
       const res = await grapOrder(order.id);
       console.log(res.data + "xxxxx");
-      this.$Toast.loading({
+      this.$Toast({
             type: "success",
             message: "抢单成功",
             duration: 2000

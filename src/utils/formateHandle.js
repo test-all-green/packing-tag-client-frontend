@@ -12,6 +12,7 @@ export default {
         if(val == 'WP') return '待支付';
         if(val == 'C') return '已取消';
         if(val == 'F') return '已完成';
+        if(val == 'WT') return '未选停车点'
         
     },
     dateFormatToString(val){
