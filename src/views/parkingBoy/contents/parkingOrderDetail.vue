@@ -1,52 +1,53 @@
 <template>
-  <div class="pk-order-detail">
-    <!-- <van-steps :active="active">
+    <div class="pk-order-detail">
+        <!-- <van-steps :active="active">
             <van-step>下单</van-step>
             <van-step>接单</van-step>
             <van-step>买家提货</van-step>
             <van-step>交易完成</van-step>
     </van-steps>-->
-    <van-popup v-model="show">
-      <p class="detail-title">停车订单</p>
-      <el-card class="box-card">
-        <van-panel :title="order.carNum" :desc="order.createTime" :status="orderContent">
-          <div>
-            <p>
-              <label>区域：</label>
-              {{order.regionId}}
-            </p>
-            <P>
-              <label>交接地点：</label>
-              {{order.parkingWaitLocation}}
-            </P>
-            <p>
-              <label>预计交接时间：</label>
-              {{order.scheduledParkingArriveTime}}
-            </p>
-            <p>
-              <label>预计停车时长：</label>
-              {{order.scheduledParkingTime+'小时'}}
-            </p>
-             <p v-if="order.type == 1">
-              <label>车辆位置：</label>
-              {{order.scheduledParkingTime}}
-            </p>
-            <!-- <p>
-              <label>联系电话：</label>
-              {{order.phone}}
-            </p>-->
-          </div>
-          <div slot="footer">
-            <van-button size="small" @click="back">返回</van-button>
-            <van-button size="small" type="primary" style="margin-left:10px;" @click="grabOrder">抢单</van-button>
-          </div>
-        </van-panel>
-      </el-card>
-    </van-popup>
-  </div>
+        <van-popup v-model="show">
+            <p class="detail-title">停车订单</p>
+            <el-card class="box-card">
+                <van-panel :title="order.carNum" :desc="order.createTime" :status="orderStatus">
+                    <div>
+                        <p>
+                            <label>区域：</label>
+                            {{order.regionName}}
+                        </p>
+                        <P>
+                            <label>交接地点：</label>
+                            {{order.parkingWaitLocation}}
+                        </P>
+                        <p>
+                            <label>预计交接时间：</label>
+                            {{order.scheduledParkingArriveTime}}
+                        </p>
+                        <p>
+                            <label>预计停车时长：</label>
+                            {{order.scheduledParkingTime+'小时'}}
+                        </p>
+                        <p v-if="order.type == 1">
+                            <label>车辆位置：</label>
+                            {{order.scheduledParkingTime}}
+                        </p>
+                        <p>
+                            <label>联系电话：</label>
+                            {{order.phone}}
+                        </p>
+                    </div>
+                    <div slot="footer">
+                        <van-button size="small" @click="back">返回</van-button>
+                        <van-button size="small" type="primary" style="margin-left:10px;" @click="grabOrder">抢单</van-button>
+                    </div>
+                </van-panel>
+            </el-card>
+        </van-popup>
+    </div>
 </template>
 
 <script>
+import {grapOrder} from '../../../api/order'
 export default {
   props: ["order"],
   data() {
@@ -62,8 +63,7 @@ export default {
       //   createTime: "2019-07-29 12:23:30",
       //   phone: "13651241411"
       // }
-      orderContent:
-        this.order.status === "PW" ? "停车等待受理" : "取车等待受理"
+      orderStatus: "无人受理"
     };
   },
 
@@ -76,17 +76,26 @@ export default {
 
   mounted() {},
 
-  created() {
-    
-  },
+  created() {},
 
   methods: {
-    grabOrder() {
-      console.log(this.order.id)
-      this.$router.push({
-        path: "/parkingBoy/choosePkLot",
-        query: { orderId: this.order.id }
+    async grabOrder() {
+      console.log(this.order.id);
+
+      
+      
+      const res = await grapOrder(this.order.id);
+     console.log(res.data+'xxxxx');
+      this.$toast({
+        message: "抢单成功",
+        type:'success',
+        className:'toast'
       });
+
+        this.$router.push({
+          path: "/choosePkLot",
+          query: { orderId: this.order.id }
+        });
       this.show = false;
     },
     back() {
@@ -99,6 +108,15 @@ export default {
 };
 </script>
 <style lang='scss' >
+.toast{
+    height: 60px;
+    width: 120px;
+}
+.mint-toast-text{
+    font-size:24px;
+    // padding-top:10px;
+    line-height: 40px;
+}
 .pk-order-detail {
   height: 562px;
   .van-popup {

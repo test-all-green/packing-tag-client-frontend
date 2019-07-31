@@ -12,3 +12,12 @@ export function getHistoryOrder(){
 export function putGrapOrder(data){
     return put('http://localhost:8088/parking-orders/grabOrder',data)
 }
+export function chooseLotInOrder(data){
+    return put('http://localhost:8088/parking-orders/grabOrder',data)
+}
+export function grapOrder(orderId){
+    return put("http://localhost:8088/parking-orders/saveParkBoyId/"+orderId)
+}
+export function getPkHistoryOrder(){
+    return get('http://localhost:8088/parking-orders/historys-employees');
+}

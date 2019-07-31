@@ -8,19 +8,19 @@
             <router-view></router-view>
         </div>
         <mt-tabbar v-model="selected">
-            <mt-tab-item id="serve">
+            <mt-tab-item id="服务厅">
                 <i class="el-icon-s-order" slot="icon"></i>
                 <span>服务厅</span>
             </mt-tab-item>
-            <mt-tab-item id="share">
+            <mt-tab-item id="共享">
                 <i class="el-icon-place" slot="icon"></i>
                 <span>共享</span>
             </mt-tab-item>
-            <mt-tab-item id="order">
+            <mt-tab-item id="我的订单">
                 <i class="el-icon-notebook-2" slot="icon"></i>
                 <span>我的订单</span>
             </mt-tab-item>
-            <mt-tab-item id="my">
+            <mt-tab-item id="我的">
                 <i class="el-icon-user" slot="icon"></i>
                 我的
             </mt-tab-item>
@@ -40,7 +40,7 @@ export default {
         return {
             isNoticed: false,
             popupVisible: false,
-            selected: "serve",
+            selected: "服务厅",
             routerName: {
                 serve: "服务厅",
                 share: "共享",
@@ -81,9 +81,12 @@ export default {
     },
 
     watch: {
-        selected(val, oldVal) {
-            this.$router.push("/custom/" + val);
-        }
+      $route(to,from){
+          this.selected = to.name;
+      },
+    selected(val, oldVal) {
+      this.$router.push({name:val});
+    }
     },
     computed: {
         titleName() {

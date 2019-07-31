@@ -41,7 +41,7 @@ let router = new Router({
                     component: () => import('@/views/parkingBoy/contents/parkingOrderDetail'),
                 },
                 {
-                    path: '/parkingBoy/choosePkLot',
+                    path: '/choosePkLot',
                     name:'选择停车场',
                     component: () => import('@/views/parkingBoy/contents/choosePkLot'),
                 },

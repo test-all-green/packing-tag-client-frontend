@@ -14,5 +14,6 @@ export function login (data, userType) {
 
 export function signinAccount(data) {
   let url = 'http://localhost:8088/users/register';
+  // let url = 'http://localhost:8088/users/register';
   return post(url, data);
 }

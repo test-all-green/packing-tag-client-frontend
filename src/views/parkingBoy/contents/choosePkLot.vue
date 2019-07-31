@@ -38,7 +38,7 @@
 
 <script>
 import {getPkLots,getShareLots } from '../../../api/parkinglot'
-import {putGrapOrder} from '../../../api/order'
+import {chooseLotInOrder} from '../../../api/order'
 export default {
   data() {
     return {
@@ -79,8 +79,8 @@ export default {
     chooseLot(item) {
       this.$dialog
         .confirm({
-          title: "选择停车地点",
-          message: "确认抢单，并将车停往" + item.parkingLotName + "?"
+          title: "选择停车点",
+          message: "确认停车点，请尽快将车停往" + item.parkingLotName
         })
         .then(() => {
           console.log("yes");
@@ -117,7 +117,7 @@ export default {
         });
     },
     async grapOrder(data){
-      const res = await putGrapOrder(data);
+      const res = await chooseLotInOrder(data);
       if(res.status == 200){
         this.$message({
           message: '抢单成功，请尽快前往交接地点',
