@@ -65,6 +65,11 @@ let router = new Router({
                     path: '/custom/order',
                     name: '我的订单',
                     component: () => import('@/views/custom/contents/order.vue')
+                },
+                {
+                    path: '/custom/share',
+                    name: '共享',
+                    component: () => import('@/views/custom/contents/share.vue')
                 }
             ]
         }

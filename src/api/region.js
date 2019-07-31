@@ -1,5 +1,9 @@
-import {get} from '@/utils/http'
+import {get, post, put, _delete} from '@/utils/http'
 
 export function getRegions(){
-    return get('http://localhost:8088/regions')
+    return get('http://39.98.243.100:8088/regions')
+}
+
+export function getRegionById(id){
+    return get('http://39.98.243.100:8088/regions/'+id)
 }
