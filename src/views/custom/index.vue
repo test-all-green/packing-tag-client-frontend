@@ -11,19 +11,19 @@
             <router-view></router-view>
         </div>
         <mt-tabbar v-model="selected">
-            <mt-tab-item id="serve">
+            <mt-tab-item id="服务厅_C">
                 <i class="el-icon-s-order" slot="icon"></i>
                 <span>服务厅</span>
             </mt-tab-item>
-            <mt-tab-item id="共享">
+            <mt-tab-item id="共享_C">
                 <i class="el-icon-place" slot="icon"></i>
                 <span>共享</span>
             </mt-tab-item>
-            <mt-tab-item id="我的订单">
+            <mt-tab-item id="我的订单_C">
                 <i class="el-icon-notebook-2" slot="icon"></i>
                 <span>我的订单</span>
             </mt-tab-item>
-            <mt-tab-item id="我的">
+            <mt-tab-item id="我的_C">
                 <i class="el-icon-user" slot="icon"></i>
                 我的
             </mt-tab-item>
@@ -38,13 +38,8 @@ export default {
   data() {
     return {
       isNoticed:false,
-      selected: "服务厅",
-      routerName: {
-        serve: "服务厅",
-        share:"共享",
-        order: "我的订单",
-        my: "个人中心"
-      },
+      selected: "服务厅_C",
+     
     };
   },
   mounted(){
@@ -74,7 +69,7 @@ export default {
   computed:{
     
     titleName(){
-      return this.$route.name;
+      return this.$route.name.split('_')[0];
     }
  
 },

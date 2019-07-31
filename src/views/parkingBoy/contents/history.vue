@@ -86,9 +86,10 @@ export default {
 
     },
     chooseLost(order){
+        console.log("orderId:  "+order.id);
          this.$router.push({
-          path: "/choosePkLot",
-          query: { orderId: order.id }
+          name:'选择停车场',
+          params: { orderId: order.id }
         });
     }
   },
