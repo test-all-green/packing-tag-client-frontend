@@ -2,8 +2,8 @@
     <div class="pk-history">
         <div class="order-list">
             <div v-for="order in orderList" :key="order.id" @click="active(order.id)">
-                <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
-                    <div class="order-body">
+                <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}" >
+                    <div class="order-body" :class="{'over-color':checkOverStatus(order.status)}">
                         <van-panel :title="order.carNum" :desc="dateFormat(order.createTime)" :status="changeStatus(order.status)">
                             <div>
                                 <p>
@@ -109,6 +109,11 @@ export default {
 
       this.orderList = data.data;
     },
+    checkOverStatus(status){
+      if(status == 'F'||status == 'FW'||status == 'WP'){
+        return true;
+      }
+    },
     lookDetail(order) {},
     chooseLost(order) {
       console.log("orderId:  " + order.id);
@@ -205,6 +210,11 @@ export default {
   .order-list {
     .van-cell__label {
       width: 200px;
+    }
+    .over-color{
+      .van-panel__header-value{
+        color:#969799;
+      }
     }
 
     .order-body {
