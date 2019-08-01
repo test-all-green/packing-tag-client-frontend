@@ -72,6 +72,7 @@ export default {
         id: this.item.id,
         regionId: this.item.regionId,
         locationId: this.item.locationId,
+        locationName:this.item.locationName,
         parkingLotName: this.item.parkingLotName,
         beginTime: "",
         endTime: ""
