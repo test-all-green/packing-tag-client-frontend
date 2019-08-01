@@ -13,8 +13,9 @@
 
     <mt-tabbar v-model="selected">
       <mt-tab-item id="服务厅_P">
-        <i class="el-icon-s-order" slot="icon"></i>
-        抢单
+        <div :class="{'red-color-point': isGrabOrderNoticed }" @click="isGrabOrderNoticed=false"></div>
+        <i class="el-icon-s-order" slot="icon" @click="isGrabOrderNoticed=false"></i>
+        <span @click="isGrabOrderNoticed=false">抢单</span> 
       </mt-tab-item>
       <!-- <mt-tab-item id="fetchCarOrder">
         <i class="el-icon-map-location" slot="icon"></i>
@@ -33,11 +34,13 @@
 </template>
 
 <script>
+import { getOrders } from "../../api/order";
 import { get } from '@/utils/http'
 export default {
   data () {
     return {
       selected: '服务厅_P',
+      isGrabOrderNoticed:false
       // titleName:'服务厅'
     }
   },
@@ -59,6 +62,32 @@ export default {
   created(){
     
   },
+  mounted(){
+        this.polling = setInterval(() => {
+          getOrders("PW").then(response => {
+                var oldStatusList = this.$store.state.grapOrderList.map(item => {
+                    return item.status;
+                });
+                console.log('oldStatusList :', oldStatusList);
+                var newStatusList = response.data.map(item => {
+                    return item.status;
+                });
+                console.log('newStatusList :', newStatusList);
+                if (oldStatusList.toString() !== newStatusList.toString()) {
+                    this.$message({
+                        message: "订单状态有更新!",
+                        duration: 2000
+                    });
+                    this.isGrabOrderNoticed = true;
+                    this.$store.commit('setGrapOrderList',response.data)
+                }
+            }
+          );
+        }, 2000);
+  },
+  beforeDestroy(){
+
+  },
   methods: {
     getMsg () {
       get('http://39.98.244.95:8088/parking-staffs/getMessage').then((response) => {
@@ -72,8 +101,18 @@ export default {
 <style>
 .mint-tabbar .mint-tab-item .mint-tab-item-icon {
   font-size: 24px;
+  position: relative;
 }
-
+.red-color-point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    z-index: 10;
+    top: 44%;
+    left: 25.5%;
+    border-radius: 50%;
+}
 .mint-header {
   height: 50px;
 }

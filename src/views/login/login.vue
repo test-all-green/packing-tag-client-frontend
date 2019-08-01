@@ -1,6 +1,6 @@
 <template>
   <div class="formBody">
-    <img src="@/assets/newlogo.png" style="margin-top:40px;margin-bottom:40px;" width="250px"  />
+    <img src="@/assets/parking_tag.png" style="" width="350px"  />
     <el-form
       ref="loginForm"
       :model="account"

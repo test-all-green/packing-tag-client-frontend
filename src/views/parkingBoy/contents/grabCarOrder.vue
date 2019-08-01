@@ -1,7 +1,7 @@
 <template>
     <div class="grab-car-order-container">
         <div class="order-list">
-            <div v-for="order in orderList" :key="order.id" @click="active(order.id)">
+            <div v-for="order in $store.state.grapOrderList" :key="order.id" @click="active(order.id)">
                 <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
                     <div class="order-body">
                         <van-panel :title="carNum(order)" :desc="order.parkingWaitLocation" :status="changeStatus(order.status)">
