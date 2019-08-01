@@ -6,9 +6,7 @@
     <el-row align="center">
       <el-col class="col-form" :span="20" :offset="1">
         <el-form label-width="80px" :model="form" :rules="rules">
-          <el-form-item label="名称" prop="parkingLotName">
-            <el-input v-model="form.parkingLotName" placeholder="请输入车位的名称"></el-input>
-          </el-form-item>
+         
           <el-form-item label="区域" label-width="80px" prop="regionId">
             <el-select v-model="form.regionId" placeholder="请选择区域">
               <el-option
@@ -29,6 +27,9 @@
                 :value="item.id"
               ></el-option>
             </el-select>
+          </el-form-item>
+           <el-form-item label="停车位" prop="parkingLotName">
+            <el-input v-model="form.parkingLotName" placeholder="请输入停车位"></el-input>
           </el-form-item>
         </el-form>
       </el-col>

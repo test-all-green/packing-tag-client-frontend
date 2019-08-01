@@ -23,7 +23,7 @@
               { required: true, message: '姓名不能为空', trigger: 'blur' }
             ]"
           >
-            <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
+            <el-input type="text" v-model="ruleForm.userName" autocomplete="off" placeholder="请输入姓名"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -31,7 +31,7 @@
       <el-row>
         <el-col :span="20" :offset="1">
           <el-form-item label="邮箱" prop="email" label-width="80px">
-            <el-input type="text" v-model="ruleForm.email" autocomplete="off"></el-input>
+            <el-input type="text" v-model="ruleForm.email" autocomplete="off" placeholder="请输入邮箱"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -39,7 +39,7 @@
       <el-row>
         <el-col :span="20" :offset="1">
           <el-form-item label="手机" prop="phone" label-width="80px">
-            <el-input type="text" v-model="ruleForm.phone" autocomplete="off"></el-input>
+            <el-input type="text" v-model="ruleForm.phone" autocomplete="off" placeholder="请输入手机号码"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -47,7 +47,7 @@
       <el-row>
         <el-col :span="20" :offset="1">
           <el-form-item label="密码" prop="userPassword" label-width="80px">
-            <el-input type="password" v-model="ruleForm.userPassword" autocomplete="off"></el-input>
+            <el-input type="password" v-model="ruleForm.userPassword" autocomplete="off" placeholder="请输入您的密码"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -55,7 +55,7 @@
       <el-row>
         <el-col :span="20" :offset="1">
           <el-form-item label="确认密码" prop="checkPassword" label-width="80px">
-            <el-input type="password" v-model="ruleForm.checkPassword" autocomplete="off"></el-input>
+            <el-input type="password" v-model="ruleForm.checkPassword" autocomplete="off" placeholder="请再次输入密码"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

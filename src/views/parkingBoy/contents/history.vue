@@ -5,7 +5,6 @@
                 <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
                     <div class="order-body">
                         <van-panel :title="order.carNum" :desc="dateFormat(order.createTime)" :status="changeStatus(order.status)">
-                            <!-- <div style="float:left;height:65px;width:100%;margin-top:-80px;" @click="activeIndex = -1"></div> -->
                             <div>
                                 <p>
                                     <label>订单类型：</label>
@@ -15,6 +14,14 @@
                                     <label>区域：</label>
                                     {{order.regionName}}
                                 </p>
+                                 <p v-if="order.parkingLocation != undefined || order.parkingLocation != null">
+                                    <label>停车点：</label>
+                                    {{order.parkingLocation}}
+                                </p>
+                                <p v-if="order.parkingLotName != undefined || order.parkingLotName != null">
+                                    <label>车辆位置：</label>
+                                    {{order.parkingLotName}}
+                                </p>
                                 <P>
                                     <label>交接地点：</label>
                                     {{order.parkingWaitLocation}}
@@ -23,15 +30,11 @@
                                     <label>预计交接时间：</label>
                                     {{order.scheduledParkingArriveTime}}
                                 </p>
-                                <p>
+                                <p v-if="order.type == 0">
                                     <label>预计停车时长：</label>
                                     {{order.scheduledParkingTime+'小时'}}
                                 </p>
-                                <p v-if="order.parkingLocation != undefined || order.parkingLocation != null">
-                                    <label>车辆位置：</label>
-                                    {{order.parkingLotName}}
-                                      <!-- <span v-if="order."></span> -->
-                                </p>
+                               
                                 <p>
                                     <label>联系电话：</label>
                                     {{order.phoneUser}}
@@ -44,7 +47,8 @@
                             <div slot="footer" style="text-align:right;">
                                 <van-button @click="chooseLost(order)" v-if="isNotHavaPkLot(order)" type="info">选择停车点</van-button>
                                 <van-button v-if="isCompletePark(order)" type="info" @click="completePark(order)">已停车</van-button>
-                                <van-button v-if="isCompleteFetch(order)" type="info">车已交付</van-button>
+                                <van-button v-if="isCompleteFetch(order)" type="info" @click="alreadyGiven(order)">车已交付</van-button>
+                                <van-button v-if="order.type == 1 && order.status == 'GI'" type="info" @click="alreadyFetch(order)">已取车</van-button>
                             </div>
                         </van-panel>
                     </div>
@@ -55,7 +59,7 @@
 </template>
 
 <script>
-import { getPkHistoryOrder, completeOrder } from "@/api/order.js";
+import { getPkHistoryOrder, completeOrder ,arrvialPkLot } from "@/api/order.js";
 import handle from "../../../utils/formateHandle.js";
 export default {
   data() {
@@ -90,19 +94,16 @@ export default {
   mounted() {},
 
   created() {
-      
     this.initHistoryOrder();
     this.$Toast.loading({
-        mask: true,
-        message: "加载中...",
-        duration: 1000
-      });
+      mask: true,
+      message: "加载中...",
+      duration: 1000
+    });
   },
 
   methods: {
     async initHistoryOrder() {
-      
-
       const data = await getPkHistoryOrder();
       console.log("load historyOrder...", data.data);
 
@@ -132,24 +133,43 @@ export default {
       return order.type == 0 && order.status == "PI";
     },
     isCompleteFetch(order) {
-      return order.type == 1 && order.status == "PI";
+      return order.type == 1 && order.status == "FF";
+    },
+
+    async alreadyGiven(order) {
+      
+      const res = await completeOrder(order.id);
+       this.$Toast({
+          type: "success",
+          message: "又完成一单，再接再厉！",
+          duration: 2000
+        });
+      if(res.data.code == 200) {
+        this.initHistoryOrder();
+      }
+      console.log(res.data.code);
+    },
+    async alreadyFetch(order){
+        const res = await arrvialPkLot(order.id);
+        
+        if(res.data.code == 200){
+          this.initHistoryOrder();
+            this.$Toast({
+          type: "success",
+          message: "请尽快交付车辆！",
+          duration: 2000
+        });
+        }
     },
     async completePark(order) {
       if (this.isCompletePark(order)) {
+        this.$Toast({
+          type: "success",
+          message: "又完成一单，再接再厉！",
+          duration: 2000
+        });
         const res = await completeOrder(order.id);
         if (res.data.code == 200) {
-          // Toast.success('又完成一单，再接再厉！');
-
-          //   this.$toast({
-          //     message: "又完成一单，再接再厉！",
-          //     type: "success",
-          //     className: "toast"
-          //   });
-          this.$Toast({
-            type: "success",
-            message: "又完成一单，再接再厉！",
-            duration: 2000
-          });
           this.initHistoryOrder();
         }
         console.log(res.data.code);
@@ -183,6 +203,10 @@ export default {
     display: none;
   }
   .order-list {
+    .van-cell__label {
+      width: 200px;
+    }
+
     .order-body {
       color: #969799;
       font-size: 14px;

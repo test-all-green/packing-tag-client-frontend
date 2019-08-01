@@ -7,7 +7,7 @@
       <div v-for="item in $store.state.orderList" :key="item.id">
         <el-card class="box-card" :class="{'timeout':item.status =='已完成'||item.status =='取消'}">
           <div class="card-body" @click="showDetailPage(item)">
-            <el-row>
+            <el-row tyle="flex" justify="space-around">
               <!-- <el-col :span="4" :offset="1">
                             <span class="circle">
                                 <p>订单</p>
@@ -15,12 +15,12 @@
               </el-col>-->
               <el-col :span="9" :offset="1">
                 <div style="padding:10px 0;">
-                  <p class="carNum-text">{{item.carNum == '' ? '粤BWUZHI' : item.carNum}}</p>
+                  <p class="carNum-text">{{item.carNum}}</p>
                   <!-- <p class="status-text">状态：{{orderStatusFileter(item.status)}}</p> -->
                 </div>
               </el-col>
-              <el-col :span="8" :offset="6">
-                <div class="right">
+              <el-col :span="12" :offset="2" >
+                <div class="right" :class="{'status-text-color':item.status !='F'}">
                   {{orderStatusFileter(item.status)}}
                   <!-- <i class="el-icon-right"></i> -->
                 </div>
@@ -53,6 +53,10 @@
               <el-col :span="7" :offset="2">停车地点：</el-col>
               <el-col :span="10">{{this.parkOrderItem.parkingLocation||"暂无"}}</el-col>
             </el-row>
+            <el-row v-if="this.parkOrderItem.parkingLotName != undefined || this.parkOrderItem.parkingLotName != null">
+              <el-col :span="7" :offset="2">停车位</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingLotName||"暂无"}}</el-col>
+            </el-row>
             <el-row>
               <el-col :span="7" :offset="2">服务人:</el-col>
               <el-col :span="10">{{this.parkOrderItem.parkingBoyName||"暂无"}}</el-col>
@@ -76,8 +80,8 @@
               <el-col :span="7" :offset="2">交接点：</el-col>
               <el-col :span="10">{{this.fetchOrderItem.parkingWaitLocation || '暂无'}}</el-col>
             </el-row>
-             <el-row>
-              <el-col :span="7" :offset="2">交接时间: </el-col>
+            <el-row>
+              <el-col :span="7" :offset="2">交接时间:</el-col>
               <el-col :span="10">{{this.fetchOrderItem.scheduledParkingArriveTime || '暂无'}}</el-col>
             </el-row>
             <el-row>
@@ -90,52 +94,41 @@
             </el-row>
             <el-row>
               <el-col :span="7" :offset="2">联系电话：</el-col>
-              <el-col :span="10">{{this.fetchOrderItem.parkingBoyPhone || '暂无'}}</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.phoneEmployee || '暂无'}}</el-col>
             </el-row>
-           
           </div>
         </div>
 
         <div slot="footer" class="detail-content-footer">
           <el-row type="flex" justify="center">
-            <!-- <el-col :span="10" :offset="1" v-if="this.fetchOrderItem.id !== undefined">
-              <van-button size="large" disabled>呼叫取车</van-button>
-            </el-col>-->
-            <!-- <el-col
-              :span="22"
-              :offset="1"
-              
-            >-->
             <van-button
               v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status == 'FW'"
               type="info"
               @click="callFetchCar(orderItem)"
             >呼叫取车</van-button>
-            <!-- </el-col> -->
-            <!-- <el-col :span="10" :offset="1">
-              <van-button size="large" type="danger">支付订单</van-button>
-            </el-col>-->
           </el-row>
-          <el-row>
-            <el-col :span="22" :offset="1" style="margin-top:10px;">
-              <!-- <van-button
-                size="large"
-                type="danger"
-                disabled
-                v-if="this.fetchOrderItem.id !== undefined"
-              >支付订单</van-button>-->
+          <el-row type="flex" justify="center">
               <van-button
                 size="large"
                 type="danger"
                 v-if="this.fetchOrderItem.id !== undefined && this.fetchOrderItem.status == 'WP'"
+                @click="pay(orderItem)"
               >支付订单</van-button>
+            
+          </el-row>
+        </div>
+
+        <div v-if="this.fetchOrderItem.id != undefined && this.fetchOrderItem.status == 'F'">
+          <van-divider content-position="left">支付</van-divider>
+          <el-row>
+            <el-col :span="22" :offset="2">
+              金额：{{this.fetchOrderItem.money}}
             </el-col>
           </el-row>
         </div>
       </van-panel>
     </div>
 
-    <!-- 取车订单 -->
     <div class="user-call-fetch-car-page" v-if="this.isInDetailPage == 'fetchCarPage'"></div>
   </div>
 </template>
@@ -143,6 +136,7 @@
 <script>
 import moment from "moment";
 import { getHistoryOrder, getUserOrderDetail } from "../../../api/order";
+import { goPay } from "../../../api/pay";
 export default {
   data() {
     return {
@@ -179,7 +173,13 @@ export default {
     }
   },
   created() {
+    this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
     this.initData();
+    
   },
   methods: {
     async initData() {
@@ -189,6 +189,12 @@ export default {
     },
 
     callFetchCar(order) {
+
+       this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 500
+      });
       console.log("callFetchCar..+", order);
       // this.isInDetailPage = 'fetchCarPage';
       let data = {
@@ -203,7 +209,7 @@ export default {
       this.$Toast.loading({
         mask: true,
         message: "加载中...",
-        duration: 1500
+        duration: 500
       });
       this.orderItem = {};
       this.parkOrderItem = {};
@@ -215,6 +221,7 @@ export default {
         });
 
         this.orderItem = order;
+        console.log("===========================" + this.orderItem);
         this.isInDetailPage = "orderDetailPage";
         // this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
         this.orderItem.createTime = moment(this.orderItem.createTime).format(
@@ -259,15 +266,28 @@ export default {
       console.log(val, "asdds");
       let map = {
         PW: "无人受理",
-        PI: "存取中",
+        PI: "停取中",
         F: "已完成",
         C: "取消订单",
-        GI: "前往地点",
+        GI: "正在取车",
         WP: "待支付",
-        FW: "已停车"
+        FW: "已停车",
+        WT: "正在挑选停车点",
+        FF:"急速赶来中"
       };
       console.log(map[val]);
       return map[val];
+    },
+
+    async pay(order) {
+      console.log(order);
+      const pay = await goPay(order);
+      console.log("pay=============" + pay.data);
+      const div = document.createElement("div");
+      div.innerHTML = pay.data; // html code
+      document.body.appendChild(div);
+      console.log("form=============" + document.forms[0]);
+      document.forms[0].submit();
     }
   },
   filters: {
@@ -383,6 +403,10 @@ export default {
     margin-top: 22px;
     text-align: right;
     margin-right: 10px;
+  }
+  .status-text-color{
+    color:blue;
+    // font-weight: bold;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="choose-pklot-pane">
-         <mt-header title="选择停车点" style="font-size:20px;">
-         </mt-header>
+        <mt-header title="选择停车点" style="font-size:20px;">
+        </mt-header>
         <div class="back">
             <i class="el-icon-back" @click="$router.go(-1)"></i>
         </div>
@@ -21,7 +21,7 @@
                 </div>
             </van-collapse-item>
             <van-collapse-item title="共享车位" name="2">
-              <div class="lot-choose">
+                <div class="lot-choose">
                     <el-card class="box-card lot-item" v-for="item in shareLots" :key="item.id">
                         <div @click="chooseShareLot(item)">
                             <span>
@@ -39,18 +39,17 @@
 </template>
 
 <script>
-import {getPkLots,getShareLots } from '../../../api/parkinglot'
-import {chooseLotInOrder} from '../../../api/order'
+import { getPkLots, getShareLots } from "../../../api/parkinglot";
+import { chooseLotInOrder } from "../../../api/order";
 export default {
   data() {
     return {
       activeCollapse: "",
-      
-      lots: [
-      ],
-      shareLots:[],
 
-      orderId:''
+      lots: [],
+      shareLots: [],
+
+      orderId: ""
     };
   },
 
@@ -61,26 +60,26 @@ export default {
   mounted() {},
 
   created() {
-     this.$Toast.loading({
-        mask: true,
-        message: "加载中...",
-        duration: 500
-      });
+    this.$Toast.loading({
+      mask: true,
+      message: "加载中...",
+      duration: 500
+    });
     this.orderId = this.$route.params.orderId;
 
-    console.log(this.orderId,"还有谁")
+    console.log(this.orderId, "还有谁");
     this.initLotsData();
     this.initShareLotsData();
   },
 
   methods: {
-    async initLotsData(){
-        const data = await getPkLots(this.orderId);
-        this.lots = data.data;
+    async initLotsData() {
+      const data = await getPkLots(this.orderId);
+      this.lots = data.data;
     },
-    async initShareLotsData(){
+    async initShareLotsData() {
       const data = await getShareLots(this.orderId);
-      console.log(data.data)
+      console.log(data.data);
       this.shareLots = data.data;
     },
     chooseLot(item) {
@@ -91,19 +90,19 @@ export default {
         })
         .then(() => {
           console.log("yes");
-            let postData= {
-              parkingLotType:1,
-              parkingLotId:item.id,
-              orderId:this.orderId
-            }
-            this.grapOrder(postData);
-            console.log(postData);
+          let postData = {
+            parkingLotType: 1,
+            parkingLotId: item.id,
+            orderId: this.orderId
+          };
+          this.grapOrder(postData);
+          console.log(postData);
         })
         .catch(() => {
           // on cancel
         });
     },
-    chooseShareLot(item){
+    chooseShareLot(item) {
       this.$dialog
         .confirm({
           title: "选择停车点",
@@ -111,29 +110,27 @@ export default {
         })
         .then(() => {
           console.log("yes");
-            let postData= {
-              parkingLotType:2,
-              parkingLotId:item.id,
-              orderId:this.orderId
-            }
-            this.grapOrder(postData);
-            console.log(postData);
+          let postData = {
+            parkingLotType: 2,
+            parkingLotId: item.id,
+            orderId: this.orderId
+          };
+          this.grapOrder(postData);
+          console.log(postData);
         })
         .catch(() => {
           // on cancel
         });
     },
-    async grapOrder(data){
+    async grapOrder(data) {
+      this.$Toast.loading({
+        type: "success",
+        message: "请尽快前往交接地点",
+        duration: 2000
+      });
       const res = await chooseLotInOrder(data);
-      if(res.status == 200){
-     
-        this.$Toast.loading({
-            type: "success",
-            message: "请尽快前往交接地点",
-            duration: 2000
-          });
-        
-        this.$router.push({name:'我的订单_P'});
+      if (res.status == 200) {
+        this.$router.push({ name: "我的订单_P" });
       }
     }
   },
