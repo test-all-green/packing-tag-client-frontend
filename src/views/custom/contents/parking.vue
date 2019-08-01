@@ -28,7 +28,7 @@
           <el-form-item
             label="停车场"
             prop="parkingLocation"
-            v-if="this.$route.query.order !== undefined"
+            v-if="this.$route.params.order !== undefined"
           >
             <el-input v-model="Orderform.parkingLocation" placeholder="停车地点"></el-input>
           </el-form-item>
@@ -75,6 +75,7 @@ export default {
         parkingWaitLocation: "",
         scheduledParkingArriveTime: "",
         scheduledParkingTime: "",
+        
         regionId: ""
       },
       regions: [],
@@ -111,15 +112,16 @@ export default {
 
   methods: {
     callFetchCar() {
-      console.log("callFetchCar...", this.$route.query.order);
-      if (this.$route.query.type == undefined) {
+      console.log(111,this.$store.state.order)
+      console.log("callFetchCar./..", this.$route.params.order);
+      if (this.$route.params.type == undefined) {
         this.type = 0;
       } else {
-        this.type = this.$route.query.type;
+        this.type = this.$route.params.type;
       }
 
-      if (this.$route.query.order !== undefined) {
-        let orderItem = this.$route.query.order;
+      if (this.$route.params.order !== undefined) {
+        let orderItem = this.$route.params.order;
         this.Orderform.carNum = orderItem.carNum;
         this.Orderform.regionId = orderItem.regionId;
         this.Orderform.parkingLocation = orderItem.parkingLocation;
@@ -134,10 +136,10 @@ export default {
     async submit() {
       this.$refs.parkAndFetchForm.validate(valid => {
         if (valid) {
-          if (this.$route.query.order !== undefined) {
-            this.Orderform.previousOrderId = this.$route.query.order.id;
+          if (this.$route.params.order !== undefined) {
+            this.Orderform.previousOrderId = this.$route.params.order.id;
             this.Orderform.type = 1;
-            console.log("取车发送表单", this.Orderform, this.$route.query.order);
+            console.log("取车发送表单", this.Orderform, this.$route.params.order);
             pushOrder(this.Orderform).then((response) => {
               const data = response.data;
               console.log("去测回应：", response)

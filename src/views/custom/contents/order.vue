@@ -4,7 +4,7 @@
       <i class="el-icon-back"></i>
     </div>
     <div class="user-orderList-wrapper" v-if="this.isInDetailPage == 'orderListPage'">
-      <div v-for="item in OrderData" :key="item.id">
+      <div v-for="item in $store.state.orderList" :key="item.id">
         <el-card class="box-card" :class="{'timeout':item.status =='已完成'||item.status =='取消'}">
           <div class="card-body">
             <el-row>
@@ -87,7 +87,11 @@
             <!-- <el-col :span="10" :offset="1" v-if="this.fetchOrderItem.id !== undefined">
               <van-button size="large" disabled>呼叫取车</van-button>
             </el-col>-->
-            <el-col :span="22" :offset="1" v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status !== 'WT'">
+            <el-col
+              :span="22"
+              :offset="1"
+              v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status !== 'WT'"
+            >
               <van-button size="large" @click="callFetchCar(orderItem)">呼叫取车</van-button>
             </el-col>
             <!-- <el-col :span="10" :offset="1">
@@ -114,9 +118,7 @@
     </div>
 
     <!-- 取车订单 -->
-    <div class="user-call-fetch-car-page" v-if="this.isInDetailPage == 'fetchCarPage'">
-
-    </div>
+    <div class="user-call-fetch-car-page" v-if="this.isInDetailPage == 'fetchCarPage'"></div>
   </div>
 </template>
 
@@ -146,7 +148,7 @@ export default {
           regionId: "1"
         }
       ],
-      isInDetailPage: 'orderListPage',
+      isInDetailPage: "orderListPage",
       orderItem: {},
       parkOrderItem: {},
       fetchOrderItem: {}
@@ -161,25 +163,22 @@ export default {
     async initData() {
       const data = await getHistoryOrder();
       this.OrderData = data.data;
-      console.log("initData", this.OrderData)
+      console.log("initData", this.OrderData);
     },
 
     callFetchCar(order) {
-        console.log("callFetchCar..", order)
-        // this.isInDetailPage = 'fetchCarPage';
-        let data = {
-            "order": order,
-            "type": 1
-        }
-        this.$router.push({path: '/custom/serve', query: data})
+      console.log("callFetchCar..+", order);
+      // this.isInDetailPage = 'fetchCarPage';
+      let data = {
+        "order": order,
+        "type": 1
 
-    }
-  },
-  filters: {
-    dateFilter(val) {
-      moment(val).format("YYYY MM DD, HH:mm:ss");
+        
+      };
+      this.$store.commit('setOrder',data)
+      // this.$router.push({ path: "/custom/serve", query: data });
+      this.$router.push({ name: "服务厅_C", params: data });
     },
-
     async showDetailPage(order) {
       this.orderItem = {};
       this.parkOrderItem = {};
@@ -191,14 +190,14 @@ export default {
         });
 
         this.orderItem = order;
-        this.isInDetailPage = 'orderDetailPage';
+        this.isInDetailPage = "orderDetailPage";
         this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
         this.orderItem.createTime = moment(this.orderItem.createTime).format(
           "YYYY-MM-DD HH:mm:ss"
         );
         return;
       }
-      this.isInDetailPage = 'orderDetailPage';
+      this.isInDetailPage = "orderDetailPage";
       let param = {
         id: order.id,
         type: order.type
@@ -228,7 +227,7 @@ export default {
     },
 
     backToList() {
-      this.isInDetailPage = 'orderListPage';
+      this.isInDetailPage = "orderListPage";
     },
 
     orderStatusFileter(val) {
@@ -239,16 +238,15 @@ export default {
         C: "取消订单",
         GI: "前往地点",
         WP: "待支付",
-        FW: "等待取车受理",
+        FW: "等待取车受理"
       };
       return map[val];
     }
   },
-
   filters: {
     dateFilter(val) {
       moment(val).format("YYYY MM DD, HH:mm:ss");
-    },
+    }
   }
 };
 </script>
