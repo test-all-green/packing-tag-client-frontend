@@ -99,9 +99,8 @@ export default {
               type: "success"
             });
           }
-
           this.$parent.addSuccess();
-          this.$parent.initData();
+          this.$store.dispatch('getShareParkingLot')
         })
         .catch(error => {
           this.$message({
