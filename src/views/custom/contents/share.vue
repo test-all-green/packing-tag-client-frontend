@@ -77,6 +77,7 @@ export default {
     };
   },
   created() {
+      this.$store.commit('setCustomNavIndex','共享_C');
     this.initData();
   },
   components: {

@@ -94,6 +94,7 @@ export default {
   mounted() {},
 
   created() {
+      this.$store.commit('setEmployeeNavIndex','我的订单_P');
     this.initHistoryOrder();
     this.$Toast.loading({
       mask: true,

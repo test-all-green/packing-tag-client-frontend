@@ -107,6 +107,7 @@ export default {
     }
   },
   created() {
+      this.$store.commit('setCustomNavIndex','服务厅_C');
     this.getRegionsData();
     this.callFetchCar();
   },

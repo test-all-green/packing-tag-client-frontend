@@ -112,6 +112,7 @@ export default {
     }
   },
   created() {
+      this.$store.commit('setEmployeeNavIndex','服务厅_P');
     this.$Toast.loading({
       mask: true,
       message: "加载中...",
