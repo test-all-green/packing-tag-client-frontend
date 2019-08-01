@@ -11,25 +11,29 @@
             <router-view></router-view>
         </div>
 
-        <mt-tabbar v-model="selected">
+        <!-- <mt-tabbar v-model="selected">
             <mt-tab-item id="服务厅_P">
                 <div :class="{'red-color-point': isGrabOrderNoticed }" @click="isGrabOrderNoticed=false"></div>
                 <i class="el-icon-s-order" slot="icon" @click="isGrabOrderNoticed=false"></i>
                 <span @click="isGrabOrderNoticed=false">抢单</span>
             </mt-tab-item>
-            <!-- <mt-tab-item id="fetchCarOrder">
-        <i class="el-icon-map-location" slot="icon"></i>
-        <span @click="getMsg">停取</span>
-      </mt-tab-item> -->
             <mt-tab-item id="我的订单_P">
                 <i class="el-icon-notebook-2" slot="icon"></i>
                 我的订单
             </mt-tab-item>
-            <!-- <mt-tab-item id="我的_P">
-        <i class="el-icon-user" slot="icon"></i>
-        我的
-      </mt-tab-item> -->
-        </mt-tabbar>
+        </mt-tabbar> -->
+        <div class="tabbar-style">
+            <van-tabbar route >
+            <van-tabbar-item replace to="/parkingBoy/serve-pkb" icon="logistics" :dot="isGrabOrderNoticed"  @click="isGrabOrderNoticed=false">
+                抢单
+            </van-tabbar-item>
+            <van-tabbar-item replace to="/parkingBoy/order-pkb" icon="orders-o">
+                我的订单
+            </van-tabbar-item>
+        </van-tabbar>
+        </div>
+        
+
     </div>
 </template>
 
@@ -45,25 +49,25 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
-      this.selected = to.name;
-    },
-    selected(val, oldVal) {
-      this.$router.push({ name: val });
-    }
+    // $route(to, from) {
+    //   this.selected = to.name;
+    // },
+    // selected(val, oldVal) {
+    //   this.$router.push({ name: val });
+    // }
   },
   computed: {
     titleName() {
       return this.$route.name.split("_")[0];
     },
-    selected(val, oldVal) {
-      this.$router.push({ name: val });
-    },
-    navIndex() {
-      var index = this.$store.state.employeeNavIndex;
-      this.selected = index;
-      return index;
-    }
+    // selected(val, oldVal) {
+    //   this.$router.push({ name: val });
+    // },
+    // navIndex() {
+    //   var index = this.$store.state.employeeNavIndex;
+    //   this.selected = index;
+    //   return index;
+    // }
   },
   created() {},
   mounted() {
@@ -101,7 +105,16 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
+.tabbar-style{
+
+    .van-tabbar{
+        height:60px;
+    .van-tabbar-item{
+        font-size:16px;
+    }
+    }
+}
 .mint-tabbar .mint-tab-item .mint-tab-item-icon {
   font-size: 24px;
   position: relative;

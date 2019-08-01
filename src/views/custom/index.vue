@@ -6,7 +6,7 @@
         <div class="body">
             <router-view></router-view>
         </div>
-        <mt-tabbar v-model="selected">
+        <!-- <mt-tabbar v-model="selected">
             <mt-tab-item id="服务厅_C">
                 <i class="el-icon-s-order" slot="icon">
                 </i>
@@ -22,11 +22,22 @@
                 <i class="el-icon-notebook-2" slot="icon" @click="isOrderNoticed=false"></i>
                 <span @click="isOrderNoticed=false">我的订单</span>
             </mt-tab-item>
-            <!-- <mt-tab-item id="我的_C">
-                <i class="el-icon-user" slot="icon"></i>
-                我的
-            </mt-tab-item> -->
-        </mt-tabbar>
+           
+        </mt-tabbar> -->
+        <div class="tabbar-style">
+             <van-tabbar route >
+            <van-tabbar-item replace to="/custom/serve" icon="logistics" >
+                停车
+            </van-tabbar-item>
+            <van-tabbar-item replace to="/custom/share" icon="balance-o" :dot="isShareParkingLotNoticed"  @click="isShareParkingLotNoticed=false">
+                共享
+            </van-tabbar-item>
+            <van-tabbar-item replace to="/custom/order" icon="orders-o" :dot="isOrderNoticed" @click="isOrderNoticed=false">
+                我的订单
+            </van-tabbar-item>
+        </van-tabbar>
+        </div>
+       
         
     </div>
 
@@ -118,7 +129,16 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
+.tabbar-style{
+
+    .van-tabbar{
+        height:60px;
+    .van-tabbar-item{
+        font-size:16px;
+    }
+    }   
+}
 .mint-tabbar .mint-tab-item .mint-tab-item-icon {
   font-size: 24px;
 }
@@ -158,4 +178,5 @@ export default {
   text-align: center;
   line-height: 50px;
 }
+
 </style>
