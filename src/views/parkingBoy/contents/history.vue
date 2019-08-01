@@ -5,7 +5,6 @@
                 <el-card class="box-card" style="width: 100%;" shadow="hover" :class="{'isActive':activeIndex == order.id}">
                     <div class="order-body">
                         <van-panel :title="order.carNum" :desc="dateFormat(order.createTime)" :status="changeStatus(order.status)">
-                            <!-- <div style="float:left;height:65px;width:100%;margin-top:-80px;" @click="activeIndex = -1"></div> -->
                             <div>
                                 <p>
                                     <label>订单类型：</label>
@@ -30,7 +29,7 @@
                                 <p v-if="order.parkingLocation != undefined || order.parkingLocation != null">
                                     <label>车辆位置：</label>
                                     {{order.parkingLotName}}
-                                      <!-- <span v-if="order."></span> -->
+                                    <!-- <span v-if="order."></span> -->
                                 </p>
                                 <p>
                                     <label>联系电话：</label>
@@ -61,23 +60,23 @@ export default {
   data() {
     return {
       orderList: [
-        // {
-        //   id: 1,
-        //   carNum: "粤XXXX",
-        //   type: "0",
-        //   parkingWaitLocation: "街道",
-        //   regionName: "香洲区",
-        //   scheduledParkingArriveTime: "9:00",
-        //   status: "WT"
-        // },
-        // {
-        //   id: 2,
-        //   carNum: "粤XXXX",
-        //   type: "1",
-        //   parkingWaitLocation: "街道",
-        //   regionName: "香洲区",
-        //   scheduledParkingArriveTime: "9:00"
-        // }
+        {
+          id: 1,
+          carNum: "粤XXXX",
+          type: "0",
+          parkingWaitLocation: "街道",
+          regionName: "香洲区",
+          scheduledParkingArriveTime: "9:00",
+          status: "WT"
+        },
+        {
+          id: 2,
+          carNum: "粤XXXX",
+          type: "1",
+          parkingWaitLocation: "街道",
+          regionName: "香洲区",
+          scheduledParkingArriveTime: "9:00"
+        }
       ],
       activeIndex: -1
     };
@@ -90,23 +89,20 @@ export default {
   mounted() {},
 
   created() {
-      
     this.initHistoryOrder();
     this.$Toast.loading({
-        mask: true,
-        message: "加载中...",
-        duration: 1000
-      });
+      mask: true,
+      message: "加载中...",
+      duration: 1000
+    });
   },
 
   methods: {
     async initHistoryOrder() {
-      
-
       const data = await getPkHistoryOrder();
       console.log("load historyOrder...", data.data);
 
-      this.orderList = data.data;
+    //   this.orderList = data.data;
     },
     lookDetail(order) {},
     chooseLost(order) {
@@ -183,7 +179,10 @@ export default {
     display: none;
   }
   .order-list {
+    
+    
     .order-body {
+       
       color: #969799;
       font-size: 14px;
       .van-cell__title {

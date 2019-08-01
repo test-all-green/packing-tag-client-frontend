@@ -22,10 +22,10 @@
                 <i class="el-icon-notebook-2" slot="icon" @click="isOrderNoticed=false"></i>
                 <span @click="isOrderNoticed=false">我的订单</span>
             </mt-tab-item>
-            <mt-tab-item id="我的_C">
+            <!-- <mt-tab-item id="我的_C">
                 <i class="el-icon-user" slot="icon"></i>
                 我的
-            </mt-tab-item>
+            </mt-tab-item> -->
         </mt-tabbar>
     </div>
     
