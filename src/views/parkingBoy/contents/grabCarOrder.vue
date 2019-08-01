@@ -198,7 +198,7 @@ export default {
        this.$Toast.loading({
         mask: true,
         message: "加载中...",
-        duration: 500
+        duration: 1000
       });
       this.initData();
   },

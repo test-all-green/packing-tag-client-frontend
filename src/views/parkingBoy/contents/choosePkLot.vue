@@ -126,9 +126,10 @@ export default {
     async grapOrder(data){
       const res = await chooseLotInOrder(data);
       if(res.status == 200){
-        this.$Toast({
+     
+        this.$Toast.loading({
             type: "success",
-            message: "选择成功,请尽快前往交接地点",
+            message: "请尽快前往交接地点",
             duration: 2000
           });
         

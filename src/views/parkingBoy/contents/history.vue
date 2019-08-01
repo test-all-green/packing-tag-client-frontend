@@ -90,12 +90,13 @@ export default {
   mounted() {},
 
   created() {
-      this.$Toast.loading({
+      
+    this.initHistoryOrder();
+    this.$Toast.loading({
         mask: true,
         message: "加载中...",
-        duration: 500
+        duration: 1000
       });
-    this.initHistoryOrder();
   },
 
   methods: {

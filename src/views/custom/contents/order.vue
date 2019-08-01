@@ -37,14 +37,7 @@
       >
         <div class="detail-content-container">
           <div class="detail-info">
-            <el-row>
-              <el-col :span="7" :offset="2">服务人:</el-col>
-              <el-col :span="10">{{this.parkOrderItem.parkingBoyName}}</el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="7" :offset="2">联系电话：</el-col>
-              <el-col :span="10">{{this.parkOrderItem.phoneEmployee}}</el-col>
-            </el-row>
+           
             <el-row>
               <el-col :span="7" :offset="2">区域：</el-col>
               <el-col :span="10">{{this.parkOrderItem.regionName}}</el-col>
@@ -56,6 +49,14 @@
             <el-row>
               <el-col :span="7" :offset="2">停车地点：</el-col>
               <el-col :span="10">{{this.parkOrderItem.parkingLocation}}</el-col>
+            </el-row>
+             <el-row>
+              <el-col :span="7" :offset="2">服务人:</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingBoyName}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">联系电话：</el-col>
+              <el-col :span="10">{{this.parkOrderItem.phoneEmployee}}</el-col>
             </el-row>
           </div>
         </div>
@@ -90,7 +91,7 @@
             <el-col
               :span="22"
               :offset="1"
-              v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status !== 'WT'"
+              v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status == 'WT'"
             >
               <van-button size="large" @click="callFetchCar(orderItem)">呼叫取车</van-button>
             </el-col>
@@ -100,17 +101,17 @@
           </el-row>
           <el-row>
             <el-col :span="22" :offset="1" style="margin-top:10px;">
-              <van-button
+              <!-- <van-button
                 size="large"
                 type="danger"
                 disabled
-                v-if="this.fetchOrderItem.id == undefined"
-              >支付订单</van-button>
+                v-if="this.fetchOrderItem.id !== undefined"
+              >支付订单</van-button> -->
               <van-button
                 size="large"
                 type="danger"
-                v-if="this.fetchOrderItem.id !== undefined"
-              >支付订单</van-button>
+                v-if="this.fetchOrderItem.id !== undefined && this.fetchOrderItem.status == 'WP'"
+              >支付订单</van-button>    
             </el-col>
           </el-row>
         </div>
@@ -180,6 +181,11 @@ export default {
       this.$router.push({ name: "服务厅_C", params: data });
     },
     async showDetailPage(order) {
+         this.$Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 1500
+      });
       this.orderItem = {};
       this.parkOrderItem = {};
       this.fetchOrderItem = {};
