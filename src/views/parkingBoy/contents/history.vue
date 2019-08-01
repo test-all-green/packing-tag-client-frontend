@@ -22,7 +22,7 @@
                                     <label>预计交接时间：</label>
                                     {{order.scheduledParkingArriveTime}}
                                 </p>
-                                <p>
+                                <p v-if="order.type == 0">
                                     <label>预计停车时长：</label>
                                     {{order.scheduledParkingTime+'小时'}}
                                 </p>
@@ -60,23 +60,23 @@ export default {
   data() {
     return {
       orderList: [
-        {
-          id: 1,
-          carNum: "粤XXXX",
-          type: "0",
-          parkingWaitLocation: "街道",
-          regionName: "香洲区",
-          scheduledParkingArriveTime: "9:00",
-          status: "WT"
-        },
-        {
-          id: 2,
-          carNum: "粤XXXX",
-          type: "1",
-          parkingWaitLocation: "街道",
-          regionName: "香洲区",
-          scheduledParkingArriveTime: "9:00"
-        }
+        // {
+        //   id: 1,
+        //   carNum: "粤XXXX",
+        //   type: "0",
+        //   parkingWaitLocation: "街道",
+        //   regionName: "香洲区",
+        //   scheduledParkingArriveTime: "9:00",
+        //   status: "WT"
+        // },
+        // {
+        //   id: 2,
+        //   carNum: "粤XXXX",
+        //   type: "1",
+        //   parkingWaitLocation: "街道",
+        //   regionName: "香洲区",
+        //   scheduledParkingArriveTime: "9:00"
+        // }
       ],
       activeIndex: -1
     };
@@ -102,7 +102,7 @@ export default {
       const data = await getPkHistoryOrder();
       console.log("load historyOrder...", data.data);
 
-    //   this.orderList = data.data;
+      this.orderList = data.data;
     },
     lookDetail(order) {},
     chooseLost(order) {
@@ -132,20 +132,13 @@ export default {
     },
     async completePark(order) {
       if (this.isCompletePark(order)) {
+        this.$Toast({
+          type: "success",
+          message: "又完成一单，再接再厉！",
+          duration: 2000
+        });
         const res = await completeOrder(order.id);
         if (res.data.code == 200) {
-          // Toast.success('又完成一单，再接再厉！');
-
-          //   this.$toast({
-          //     message: "又完成一单，再接再厉！",
-          //     type: "success",
-          //     className: "toast"
-          //   });
-          this.$Toast({
-            type: "success",
-            message: "又完成一单，再接再厉！",
-            duration: 2000
-          });
           this.initHistoryOrder();
         }
         console.log(res.data.code);
@@ -179,10 +172,11 @@ export default {
     display: none;
   }
   .order-list {
-    
-    
+    .van-cell__label {
+      width: 200px;
+    }
+
     .order-body {
-       
       color: #969799;
       font-size: 14px;
       .van-cell__title {
