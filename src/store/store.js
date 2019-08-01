@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {getHistoryOrder} from '../api/order'
 import {getShareParkingLot} from '../api/shared'
+import { getOrders } from "../api/order";
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
         orderList:[],
-        shareParkingLotList:[]
+        shareParkingLotList:[],
+        grapOrderList:[]
     },
     mutations: {
         setOrderList(state,orderList){
@@ -15,6 +17,9 @@ const store = new Vuex.Store({
         },
         setShareParkingLot(state,shareParkingLotList){
             state.shareParkingLotList=shareParkingLotList
+        },
+        setGrapOrderList(state,grapOrderList){
+            state.grapOrderList=grapOrderList
         }
     },
     actions: {
@@ -26,6 +31,10 @@ const store = new Vuex.Store({
             const response=await getShareParkingLot()
             commit('setShareParkingLot',response.data)
         },
+        async getGrapOrderList(){
+            const response=await getOrders("PW")
+            commit('setGrapOrderList',response.data)
+        }
     },
     getters: {
     }

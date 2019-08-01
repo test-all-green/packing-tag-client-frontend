@@ -39,6 +39,7 @@ export default {
         return {
             isShareParkingLotNoticed:false,
             isOrderNoticed: false,
+            polling:'',
             selected: "服务厅_C",
             routerName: {
                 serve: "服务厅",
@@ -104,7 +105,6 @@ export default {
     }
   },
   computed:{
-    
     titleName(){
       return this.$route.name.split('_')[0];
     }
