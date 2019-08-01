@@ -160,7 +160,7 @@ export default {
                   type: "success"
                 });
               }
-
+              this.$store.dispatch('getOrderList');
               this.$router.push("/custom/order");
             });
           }

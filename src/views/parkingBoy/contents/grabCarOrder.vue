@@ -118,7 +118,7 @@ export default {
       message: "加载中...",
       duration: 1000
     });
-    this.initData();
+    this.$store.dispatch.getGrapOrderList();
   },
   mounted() {},
   components: {
