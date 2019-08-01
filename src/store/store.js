@@ -39,7 +39,7 @@ const store = new Vuex.Store({
             const response=await getShareParkingLot()
             commit('setShareParkingLot',response.data)
         },
-        async getGrapOrderList(){
+        async getGrapOrderList({commit}){
             const response=await getOrders("PW")
             commit('setGrapOrderList',response.data)
         }
