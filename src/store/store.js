@@ -9,7 +9,9 @@ const store = new Vuex.Store({
     state: {
         orderList:[],
         shareParkingLotList:[],
-        grapOrderList:[]
+        grapOrderList:[],
+        customNavIndex:'',
+        employeeNavIndex:''
     },
     mutations: {
         setOrderList(state,orderList){
@@ -20,6 +22,12 @@ const store = new Vuex.Store({
         },
         setGrapOrderList(state,grapOrderList){
             state.grapOrderList=grapOrderList
+        },
+        setCustomNavIndex(state,val){
+            state.customNavIndex = val;
+        },
+        setEmployeeNavIndex(state,val){
+            state.employeeNavIndex = val
         }
     },
     actions: {
@@ -31,7 +39,7 @@ const store = new Vuex.Store({
             const response=await getShareParkingLot()
             commit('setShareParkingLot',response.data)
         },
-        async getGrapOrderList(){
+        async getGrapOrderList({commit}){
             const response=await getOrders("PW")
             commit('setGrapOrderList',response.data)
         }

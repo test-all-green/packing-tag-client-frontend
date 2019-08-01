@@ -94,11 +94,12 @@ export default {
   mounted() {},
 
   created() {
+      this.$store.commit('setEmployeeNavIndex','我的订单_P');
     this.initHistoryOrder();
     this.$Toast.loading({
       mask: true,
       message: "加载中...",
-      duration: 1000
+      duration: 2000
     });
   },
 

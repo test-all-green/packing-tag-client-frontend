@@ -107,6 +107,7 @@ export default {
     }
   },
   created() {
+      this.$store.commit('setCustomNavIndex','服务厅_C');
     this.getRegionsData();
     this.callFetchCar();
   },
@@ -159,7 +160,7 @@ export default {
                   type: "success"
                 });
               }
-
+              this.$store.dispatch('getOrderList');
               this.$router.push("/custom/order");
             });
           }

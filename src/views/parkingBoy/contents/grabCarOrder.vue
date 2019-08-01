@@ -112,12 +112,13 @@ export default {
     }
   },
   created() {
+      this.$store.commit('setEmployeeNavIndex','服务厅_P');
     this.$Toast.loading({
       mask: true,
       message: "加载中...",
       duration: 1000
     });
-    this.initData();
+    this.$store.dispatch.getGrapOrderList();
   },
   mounted() {},
   components: {
