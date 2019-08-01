@@ -46,7 +46,7 @@
       <el-row>
         <el-col :span="18" :offset="3">
           <el-form-item>
-            <el-button type="primary" style="width:100%; border-radius: 10px;" @click.native.prevent="handleLogin">登录</el-button>
+            <el-button type="primary" style="width:100%; border-radius: 10px;" @click.native.prevent="handleLogin">员工登录</el-button>
           </el-form-item>
         </el-col>
       </el-row>
