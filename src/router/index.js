@@ -23,6 +23,10 @@ let router = new Router({
             component: loginDemo
         },
         {
+            path: '/empLogin',
+            component: () => import('@/views/login/empLogin.vue')
+        },
+        {
             path: '/signinAccount',
             component: () => import('@/views/signin/signin.vue')
         },
