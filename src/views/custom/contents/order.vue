@@ -95,9 +95,9 @@
             >
               <van-button size="large" @click="callFetchCar(orderItem)">呼叫取车</van-button>
             </el-col>
-            <!-- <el-col :span="10" :offset="1">
-              <van-button size="large" type="danger">支付订单</van-button>
-            </el-col>-->
+            <el-col :span="10" :offset="1">
+              <van-button size="large" type="danger" @click="pay(orderItem)">支付订单</van-button>
+            </el-col>
           </el-row>
           <el-row>
             <el-col :span="22" :offset="1" style="margin-top:10px;">
@@ -126,6 +126,7 @@
 <script>
 import moment from "moment";
 import { getHistoryOrder, getUserOrderDetail } from "../../../api/order";
+import { goPay } from "../../../api/pay";
 export default {
   data() {
     return {
@@ -196,6 +197,7 @@ export default {
         });
 
         this.orderItem = order;
+        console.log("==========================="+this.orderItem)
         this.isInDetailPage = "orderDetailPage";
         this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
         this.orderItem.createTime = moment(this.orderItem.createTime).format(
@@ -247,13 +249,24 @@ export default {
         FW: "等待取车受理"
       };
       return map[val];
+    },
+
+    async pay(order){
+      console.log(order)
+      const pay = await goPay(order);
+      console.log("pay============="+pay.data);
+      const div = document.createElement("div");
+      div.innerHTML = pay.data; // html code
+      document.body.appendChild(div);
+      console.log("form============="+document.forms[0]);
+      document.forms[0].submit();
     }
   },
   filters: {
     dateFilter(val) {
       moment(val).format("YYYY MM DD, HH:mm:ss");
     }
-  }
+  },
 };
 </script>
 <style lang='scss' >
