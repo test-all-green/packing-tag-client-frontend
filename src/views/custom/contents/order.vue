@@ -6,21 +6,23 @@
     <div class="user-orderList-wrapper" v-if="this.isInDetailPage == 'orderListPage'">
       <div v-for="item in $store.state.orderList" :key="item.id">
         <el-card class="box-card" :class="{'timeout':item.status =='已完成'||item.status =='取消'}">
-          <div class="card-body">
+          <div class="card-body" @click="showDetailPage(item)">
             <el-row>
               <!-- <el-col :span="4" :offset="1">
                             <span class="circle">
                                 <p>订单</p>
                             </span>
               </el-col>-->
-              <el-col :span="9" :offset="2">
-                <p class="carNum-text">{{item.carNum == '' ? '粤BWUZHI' : item.carNum}}</p>
-                <p class="status-text">状态：{{orderStatusFileter(item.status)}}</p>
+              <el-col :span="9" :offset="1">
+                <div style="padding:10px 0;">
+                  <p class="carNum-text">{{item.carNum == '' ? '粤BWUZHI' : item.carNum}}</p>
+                  <!-- <p class="status-text">状态：{{orderStatusFileter(item.status)}}</p> -->
+                </div>
               </el-col>
-              <el-col :span="4" :offset="8">
-                <div class="right" @click="showDetailPage(item)">
-                  详情
-                  <i class="el-icon-right"></i>
+              <el-col :span="8" :offset="6">
+                <div class="right">
+                  {{orderStatusFileter(item.status)}}
+                  <!-- <i class="el-icon-right"></i> -->
                 </div>
               </el-col>
             </el-row>
@@ -30,14 +32,10 @@
     </div>
 
     <div class="user-order-detail-page" v-if="this.isInDetailPage == 'orderDetailPage'">
-      <van-panel
-        :title="this.orderItem.carNum"
-        :desc="this.orderItem.createTime"
-        :status="this.orderItem.status"
-      >
+      <van-panel :title="orderItem.carNum" :desc="orderItem.createTime" :status="detailStatus">
         <div class="detail-content-container">
+          <van-divider content-position="left">停车订单</van-divider>
           <div class="detail-info">
-           
             <el-row>
               <el-col :span="7" :offset="2">区域：</el-col>
               <el-col :span="10">{{this.parkOrderItem.regionName}}</el-col>
@@ -46,55 +44,74 @@
               <el-col :span="7" :offset="2">交接点：</el-col>
               <el-col :span="10">{{this.parkOrderItem.parkingWaitLocation}}</el-col>
             </el-row>
+
+            <el-row>
+              <el-col :span="7" :offset="2">交接时间：</el-col>
+              <el-col :span="10">{{this.parkOrderItem.scheduledParkingArriveTime}}</el-col>
+            </el-row>
             <el-row>
               <el-col :span="7" :offset="2">停车地点：</el-col>
-              <el-col :span="10">{{this.parkOrderItem.parkingLocation}}</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingLocation||"暂无"}}</el-col>
             </el-row>
-             <el-row>
+            <el-row>
               <el-col :span="7" :offset="2">服务人:</el-col>
-              <el-col :span="10">{{this.parkOrderItem.parkingBoyName}}</el-col>
+              <el-col :span="10">{{this.parkOrderItem.parkingBoyName||"暂无"}}</el-col>
             </el-row>
             <el-row>
               <el-col :span="7" :offset="2">联系电话：</el-col>
-              <el-col :span="10">{{this.parkOrderItem.phoneEmployee}}</el-col>
+              <el-col :span="10">{{this.parkOrderItem.phoneEmployee||"暂无"}}</el-col>
             </el-row>
           </div>
         </div>
 
         <div class="detail-content-container" v-if="this.fetchOrderItem.id !== undefined">
-          <van-divider></van-divider>
+          <van-divider content-position="left">取车订单</van-divider>
           <div class="detail-info">
             <el-row>
-              <el-col :span="7" :offset="2">服务人:</el-col>
-              <el-col :span="10">{{this.fetchOrderItem.parkingBoyName}}</el-col>
+              <el-col :span="7" :offset="2">区域：</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.regionName}}</el-col>
             </el-row>
-            <el-row>
-              <el-col :span="7" :offset="2">联系电话：</el-col>
-              <el-col :span="10">{{this.fetchOrderItem.parkingBoyPhone}}</el-col>
-            </el-row>
+
             <el-row>
               <el-col :span="7" :offset="2">交接点：</el-col>
-              <el-col :span="10">{{this.fetchOrderItem.parkingWaitLocation}}</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingWaitLocation || '暂无'}}</el-col>
+            </el-row>
+             <el-row>
+              <el-col :span="7" :offset="2">交接时间: </el-col>
+              <el-col :span="10">{{this.fetchOrderItem.scheduledParkingArriveTime || '暂无'}}</el-col>
             </el-row>
             <el-row>
               <el-col :span="7" :offset="2">停车地点：</el-col>
-              <el-col :span="10">{{this.fetchOrderItem.parkingLocation}}</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingLocation || '暂无'}}</el-col>
             </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">服务人:</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingBoyName || '暂无'}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :offset="2">联系电话：</el-col>
+              <el-col :span="10">{{this.fetchOrderItem.parkingBoyPhone || '暂无'}}</el-col>
+            </el-row>
+           
           </div>
         </div>
 
         <div slot="footer" class="detail-content-footer">
-          <el-row>
+          <el-row type="flex" justify="center">
             <!-- <el-col :span="10" :offset="1" v-if="this.fetchOrderItem.id !== undefined">
               <van-button size="large" disabled>呼叫取车</van-button>
             </el-col>-->
-            <el-col
+            <!-- <el-col
               :span="22"
               :offset="1"
-              v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status == 'WT'"
-            >
-              <van-button size="large" @click="callFetchCar(orderItem)">呼叫取车</van-button>
-            </el-col>
+              
+            >-->
+            <van-button
+              v-if="this.parkOrderItem.id !== undefined && this.parkOrderItem.status == 'FW'"
+              type="info"
+              @click="callFetchCar(orderItem)"
+            >呼叫取车</van-button>
+            <!-- </el-col> -->
             <!-- <el-col :span="10" :offset="1">
               <van-button size="large" type="danger">支付订单</van-button>
             </el-col>-->
@@ -106,12 +123,12 @@
                 type="danger"
                 disabled
                 v-if="this.fetchOrderItem.id !== undefined"
-              >支付订单</van-button> -->
+              >支付订单</van-button>-->
               <van-button
                 size="large"
                 type="danger"
                 v-if="this.fetchOrderItem.id !== undefined && this.fetchOrderItem.status == 'WP'"
-              >支付订单</van-button>    
+              >支付订单</van-button>
             </el-col>
           </el-row>
         </div>
@@ -156,7 +173,11 @@ export default {
     };
   },
   components: {},
-  computed: {},
+  computed: {
+    detailStatus() {
+      return this.orderStatusFileter(this.orderItem.status);
+    }
+  },
   created() {
     this.initData();
   },
@@ -171,17 +192,15 @@ export default {
       console.log("callFetchCar..+", order);
       // this.isInDetailPage = 'fetchCarPage';
       let data = {
-        "order": order,
-        "type": 1
-
-        
+        order: order,
+        type: 1
       };
-      this.$store.commit('setOrder',data)
+      this.$store.commit("setOrder", data);
       // this.$router.push({ path: "/custom/serve", query: data });
       this.$router.push({ name: "服务厅_C", params: data });
     },
     async showDetailPage(order) {
-         this.$Toast.loading({
+      this.$Toast.loading({
         mask: true,
         message: "加载中...",
         duration: 1500
@@ -197,7 +216,7 @@ export default {
 
         this.orderItem = order;
         this.isInDetailPage = "orderDetailPage";
-        this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
+        // this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
         this.orderItem.createTime = moment(this.orderItem.createTime).format(
           "YYYY-MM-DD HH:mm:ss"
         );
@@ -226,7 +245,7 @@ export default {
       console.log("fetOrder", this.order.fetchOrder);
       console.log("orderItem..", this.orderItem);
 
-      this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
+      // this.orderItem.status = this.orderStatusFileter(this.orderItem.status);
       this.orderItem.createTime = moment(this.orderItem.createTime).format(
         "YYYY-MM-DD HH:mm:ss"
       );
@@ -237,6 +256,7 @@ export default {
     },
 
     orderStatusFileter(val) {
+      console.log(val, "asdds");
       let map = {
         PW: "无人受理",
         PI: "存取中",
@@ -244,8 +264,9 @@ export default {
         C: "取消订单",
         GI: "前往地点",
         WP: "待支付",
-        FW: "等待取车受理"
+        FW: "已停车"
       };
+      console.log(map[val]);
       return map[val];
     }
   },
@@ -270,7 +291,7 @@ export default {
         margin-left: 13px;
         span {
           font-size: 24px;
-          color: #9a9292;
+          color: #323233;
         }
       }
       .van-cell__value {
@@ -290,7 +311,12 @@ export default {
       }
     }
     .van-panel__footer {
-      padding: 20px 10px;
+      padding: 12px 10px;
+
+      .van-button {
+        height: 40px;
+        width: 250px;
+      }
     }
   }
   .back-to-list {
@@ -309,7 +335,7 @@ export default {
     padding: 0;
     text-align: left;
     height: 60px;
-    padding: 10px 0 0 0;
+    // padding: 10px 0 0 0;
   }
   .card-body {
     position: relative;
@@ -339,21 +365,24 @@ export default {
   }
   .carNum-text {
     font-size: 24px;
-    // margin-top:px;
+    margin-top: 10px;
   }
   .status-text {
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 8px;
+    color: #969799;
+    font-size: 12px;
   }
   .time {
     font-size: 14px;
     margin-top: 57px;
   }
   .right {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     color: #a2a2a2;
     margin-top: 22px;
+    text-align: right;
+    margin-right: 10px;
   }
 }
 </style>

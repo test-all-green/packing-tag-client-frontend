@@ -63,7 +63,7 @@
 import { pushOrder, pushFetchOrder } from "../../../api/order";
 import { getRegions } from "../../../api/region";
 export default {
-  props: ["type"],
+  props: [],
   data() {
     return {
       labelPosition: "right",
@@ -75,7 +75,7 @@ export default {
         parkingWaitLocation: "",
         scheduledParkingArriveTime: "",
         scheduledParkingTime: "",
-        
+        type:0,
         regionId: ""
       },
       regions: [],
