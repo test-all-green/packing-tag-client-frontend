@@ -46,8 +46,8 @@
       </el-tabs>
 
       <el-footer>
-        <el-col :span="4" :offset="12">
-          <el-button type="primary" @click="addSharedLot">新增共享车位</el-button>
+        <el-col :span="4" :offset="7">
+          <el-button type="primary" @click="addSharedLot">+&nbsp;&nbsp;&nbsp;新增共享车位</el-button>
         </el-col>
       </el-footer>
     </div>
@@ -121,5 +121,12 @@ export default {
       background: #333;
     }
   }
+}
+.el-footer{
+  margin-top:20px;
+  line-height:60px;
+}
+.el-tabs__item{
+  padding: 0 71.87px !important;
 }
 </style>
