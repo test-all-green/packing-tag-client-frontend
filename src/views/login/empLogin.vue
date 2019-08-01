@@ -1,6 +1,6 @@
 <template>
-  <div class="formBody">
-    <img src="@/assets/newlogo.png" style="margin-top:40px;margin-bottom:40px;" width="250px"  />
+  <div class="empLoginForm">
+    <img src="@/assets/newlogo.png" style="margin-top:40px;margin-bottom:40px;" width="250px" />
     <el-form
       ref="loginForm"
       :model="account"
@@ -16,7 +16,7 @@
               type="text"
               v-model="account.loginMethod"
               auto-complete="off"
-              placeholder="账号"
+              placeholder="员工账号"
             ><i slot="prefix" class="el-icon-user-solid"></i></el-input>
           </el-form-item>
         </el-col>
@@ -39,26 +39,26 @@
       <!-- <el-row class="userType">
         <el-radio v-model="userTypeRadio" label="1">用户</el-radio>
         <el-radio v-model="userTypeRadio" label="2">职员</el-radio>
-      </el-row> -->
+      </el-row>-->
 
       <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
 
       <el-row>
         <el-col :span="18" :offset="3">
           <el-form-item>
-            <el-button type="primary" style="width:100%; radius: 5px;" @click.native.prevent="handleLogin">登录</el-button>
+            <el-button type="primary" style="width:100%; border-radius: 10px;" @click.native.prevent="handleLogin">登录</el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <el-row>
+    <!-- <el-row>
       <el-col :span="4" :offset="8">
         <span class="register" @click="signinAccount">注册</span>
       </el-col>
       <el-col :span="4">
         <span class="findAccount">找回密码</span>
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
@@ -87,7 +87,7 @@ export default {
       }
     };
     return {
-      userTypeRadio: "1",
+      userTypeRadio: "2",
       logining: false,
       account: {
         loginMethod: "",
@@ -149,8 +149,8 @@ export default {
 };
 </script>
 
-<style>
-.formBody {
+<style lang="scss" scoped>
+.empLoginForm {
   font-size: 12px;
   height: 667px;
   background-color: #dcdcdc;
