@@ -73,6 +73,8 @@ export default {
             message: "取消共享车位成功",
             type: "success"
           });
+        this.$store.dispatch('getShareParkingLot');
+        this.$parent.addSuccess();
         }
       } catch {
         this.$message({
@@ -81,10 +83,6 @@ export default {
         });
       }
 
-      this.$parent.addSuccess();
-      this.$parent.initData();
-
-      cancelPublishShareParkingLot(this.item.id).then({});
     }
   },
   mounted() {
